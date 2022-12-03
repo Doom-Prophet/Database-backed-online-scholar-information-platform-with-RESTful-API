@@ -1,4 +1,3 @@
-import { application } from 'express';
 import {createContext, useState} from 'react';
 // import axios from 'axios';
 
