@@ -3,7 +3,7 @@ import {UserContext} from '../context/UserContext';
 import {Link} from "react-router-dom";
 
 function Signup (props) {
-    const { signup } = useContext(UserContext);
+    const { user, signup } = useContext(UserContext);
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');       
     const [name, setName] = useState('');
@@ -12,7 +12,8 @@ function Signup (props) {
 
     const handleSignup = (e) => {
         signup(email, password, name, field);
-        setSuccess(true);
+        if (user.auth) 
+            setSuccess(true);
     }
 
     return (
