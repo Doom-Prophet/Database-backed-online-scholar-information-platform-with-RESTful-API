@@ -1,6 +1,12 @@
 import {useContext, useState} from 'react';
 import {UserContext} from '../context/UserContext';
-import {Link} from "react-router-dom";
+import {Link, Navigate} from "react-router-dom";
+
+const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+const EMAIL_REGEX = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+const FIELDs = ["Algorithms and Theory", "Data Management", "Data Mining and Modeling"];
+
 
 function Signup (props) {
     const { user, signup } = useContext(UserContext);
@@ -9,6 +15,8 @@ function Signup (props) {
     const [name, setName] = useState('');
     const [field, setField] = useState('');
     const [success, setSuccess] = useState(false);
+
+    if (user && user.auth) return <Navigate to="/profile" />;
 
     const handleSignup = (e) => {
         signup(email, password, name, field);

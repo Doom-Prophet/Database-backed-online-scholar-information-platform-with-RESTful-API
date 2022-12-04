@@ -1,6 +1,9 @@
 import { Outlet, Link } from "react-router-dom";
+import {useContext} from 'react';
+import {UserContext} from '../context/UserContext'
 
 const Layout = () => {
+  const { user, logout } = useContext(UserContext);
   return (
     <>
     <div>
@@ -15,6 +18,9 @@ const Layout = () => {
           <li>
             <Link to="profile">Profile</Link>
           </li>
+          {user && user.auth ? <li>
+            <button onClick={logout}>Log out</button>
+          </li> : false}          
         </ul>
       </nav>      
     </div>
