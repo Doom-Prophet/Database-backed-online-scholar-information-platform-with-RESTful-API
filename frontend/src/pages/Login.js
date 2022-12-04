@@ -25,7 +25,7 @@ function Login (props) {
             <h1>Hi, {user.name}!</h1>
         </div> 
     :
-        <div className="login_box">
+         <div className="login_box">
             <h1 className="centered">Log In</h1>
             <form>
                 <Stack spacing={1} sx={{ width: 300 }}>
@@ -41,7 +41,6 @@ function Login (props) {
                 </Stack>
             </form>
         </div>
-        
     }</>   
     );
 }

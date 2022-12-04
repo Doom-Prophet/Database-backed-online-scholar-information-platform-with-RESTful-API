@@ -28,7 +28,7 @@ const Layout = () => {
     </div>
 
 
-      <Outlet />
+      <Outlet />      
     </>
   )
 };

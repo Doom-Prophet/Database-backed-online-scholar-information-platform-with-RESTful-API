@@ -3,13 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './css/normalize.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {UserProvider} from './context/UserContext'
+import {UserProvider} from './context/UserContext';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './css/theme';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <UserProvider>
+    <ThemeProvider theme={theme}>
       <App />
+    </ThemeProvider>
     </UserProvider>
   </React.StrictMode>
 );
