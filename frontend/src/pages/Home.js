@@ -1,6 +1,8 @@
 import { Outlet, Link } from "react-router-dom";
 import {useContext} from 'react';
-import {UserContext} from '../context/UserContext'
+import {UserContext} from '../context/UserContext';
+
+
 
 const Layout = () => {
   const { user, logout } = useContext(UserContext);
