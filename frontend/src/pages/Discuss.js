@@ -16,7 +16,7 @@ function Post (props) {
     <Card className="post">
         <CardHeader 
             avatar={
-            <Avatar sx={{ bgcolor: 'red' }} aria-label="recipe">
+            <Avatar sx={{ bgcolor: 'blue' }} aria-label="recipe">
             {props.data.User_name[0]}
             </Avatar>
             } 
@@ -27,6 +27,7 @@ function Post (props) {
             {props.data.Content}
         </CardContent>
         <CardActions disableSpacing>
+            <button>Like</button>
         {/* <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton> */}

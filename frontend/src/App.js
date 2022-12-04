@@ -1,4 +1,5 @@
 import './App.css';
+import './css/custom.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import NoMatch from './pages/NoMatch';
