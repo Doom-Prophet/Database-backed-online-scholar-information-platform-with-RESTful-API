@@ -10,7 +10,7 @@ const Layout = () => {
       <nav>
         <ul>
           <li>
-            <Link to="paper">Search</Link>
+            <Link to="search">Search</Link>
           </li>
           <li>
             <Link to="discuss">Discuss</Link>
