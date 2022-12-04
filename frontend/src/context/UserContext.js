@@ -7,12 +7,31 @@ const UserContext = createContext({ email: '', name: '', field: '', auth: false 
 
 const UserProvider = ({ children }) => {
     const [user, setUser] = useState({ email: '', name: '', field: '', auth: false });
-  
+    const [error, setError] = useState('');
+    
     const login = (email, password) => {
+      // axios.get(baseURL+'/users', {data: {email:email, password:password}})
+      // .then(response => {
+      //   // if login successfully
+      //   if (response.statusCode === 200) {
+      //     const user = response.data;
+      //     setUser((user) => ({
+      //       name: user.name,
+      //       email: user.email,
+      //       field: user.field,
+      //       auth: true,
+      //     }));
+      //   }
+      //   else {
+      //     setError(response.message);
+      //   }
+      // })
+      // .catch(err => {console.log(err); setError(err);});
+      // if login successfully
       setUser((user) => ({
-        name: user.name,
-        email: user.email,
-        field: user.field,
+        name: 'testName',
+        email: email,
+        field: 'testField',
         auth: true,
       }));
     };

@@ -9,6 +9,12 @@ function UserProfile (props) {
     return (
         <>
             <h1>Hi, {user.name}</h1>
+            <div id="fav-papers">
+
+            </div>
+            <div id="my-posts">
+
+            </div>
         </>
     );
 }

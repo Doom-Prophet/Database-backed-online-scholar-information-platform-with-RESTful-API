@@ -5,20 +5,20 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
 function Login (props) {
-    const { user, login } = useContext(UserContext);
+    const { user, login, error } = useContext(UserContext);
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');       
-    const [success, setSuccess] = useState(false);
+    const [status, setStatus] = useState('');
 
     if (user && user.auth) return <Navigate to="/profile" />;
 
     const handleLogin = (e) => {
         login(email, password);
-        setSuccess(true);
+        if (error) setStatus('error');
     }
 
     return (
-    <> { success ? 
+    <> { status === 'success' ? 
         <div>
             <h1>Hi, {user.name}!</h1>
         </div> 
@@ -31,6 +31,7 @@ function Login (props) {
                 <Button variant="contained" onClick={handleLogin}>Log in</Button>
                 <Link to='../signup'>Need an account? Sign up now </Link>
             </form>
+            { status === 'error' ? <span>Invalid email or password</span> : false}
         </div>
         
     }</>   
