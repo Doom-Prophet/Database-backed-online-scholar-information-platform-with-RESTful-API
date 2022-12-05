@@ -4,7 +4,9 @@ import {Link, Navigate} from "react-router-dom";
 import {Stack, Typography, Box, Tabs, Tab, Button} from '@mui/material';
 import {posts, papers} from '../data/mock_data';
 import StarIcon from '@mui/icons-material/Star';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import IconButton from '@mui/material/IconButton';
+import PaperItem from '../components/PaperItem';
 
 function FavPaperItem(props) {
     const [color, setColor] = useState('orange');
@@ -27,28 +29,7 @@ function FavPaperItem(props) {
             </IconButton>
             <Box sx={{width: 800}}>
                 <Link className='nonstyLink' to={`../paper/${props.data.id}`}>
-                <Box sx= {{
-                    padding: 2,
-                    backgroundColor: '#ede7f6',
-                    opacity: 0.8,
-                    '&:hover': {
-                        backgroundColor: 'secondary.light',
-                        opacity: 1
-                    }
-                }}>
-                <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
-                    <Typography variant="h6" color="text.primary">
-                    {props.data.title}
-                    </Typography>
-                    <Typography variant="subtitle1" color="text.secondary">
-                    {props.data.venue + ' ' + props.data.year}
-                    </Typography>
-                </Stack>
-                <Typography variant="body1" color="text.secondary">
-                    {props.data.abstract.slice(0, Math.min(props.data.abstract.length, 100)) + '...'}
-                </Typography>
-                                
-                </Box>
+                <PaperItem data={props.data} />
             </Link>
             </Box>
             
@@ -80,8 +61,8 @@ function PostItem(props) {
             <Typography variant="h6" color="text.primary">
             {new Date(props.data.Created_date).toDateString()}
             </Typography>
-            <Typography variant="subtitle1" color="text.secondary">
-            {props.data.Like_users.length}
+            <Typography variant="body1" color="text.secondary">
+            <FavoriteIcon /> {props.data.Like_users.length}
             </Typography>
         </Stack>
         <Typography variant="body1" color="text.secondary">
@@ -118,7 +99,10 @@ function UserProfile (props) {
 
     return (
         <>
-            <Stack sx={{bgcolor: 'background.paper', margin: 5}} spacing={1}>
+            <Stack sx={{bgcolor: 'background.paper', margin: 5}} spacing={1} 
+                display="flex" 
+                alignItems="space-between"
+                justifyContent="center">
                 <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography variant="h3" color="text.primary">
                     Hi, {user.name}
@@ -132,7 +116,7 @@ function UserProfile (props) {
                 <Typography variant="subtitle2" color="text.secondary">
                     Research Field: {user.field}
                 </Typography>
-                
+            
             </Stack>
             
             <Box sx={{ width: '100%', bgcolor: 'background.paper', mt: 5}}>
