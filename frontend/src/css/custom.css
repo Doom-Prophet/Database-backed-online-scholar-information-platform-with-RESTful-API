@@ -1,0 +1,39 @@
+:root {
+  --primary-color: #673ab7;
+  --primary-color-dark: #381f75;
+  --primary-color-light: #8561c5;
+  --secondary-color: #ffab40;
+  --secondary-color-dark: #a13800;
+  --secondary-color-light: #ffbb66;
+}
+
+.inputText {
+  display: flex;
+  margin: 20px auto;
+  width: 300px;
+}
+
+.login_box {
+  width: 300px;
+  height: auto;
+  margin: 100px auto;
+  filter: drop-shadow(0 0 0.5rem var(--primary-color-dark));
+  background-color: white;
+  padding: 20px 50px;
+  border-radius: 5%;
+}
+
+.centered {
+  display: block;
+  text-align: center;
+  margin: 20px auto;
+}
+
+.nonstyLink { 
+  text-decoration: none; 
+  color: white;
+}
+
+.nonstyLink::after {
+  color: white;
+}
