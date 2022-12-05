@@ -40,11 +40,11 @@ function UserProfile (props) {
         <>
             <h1>Hi, {user.name}</h1>
             <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
-            <Tabs value={value} onChange={handleChange} centered>
-                <Tab label="Paper List" />
-                <Tab label="My Posts" />
-            </Tabs>
-            { value === 0 ? <FavoritePaperList /> : <MyPosts />}
+                <Tabs value={value} onChange={handleChange} centered>
+                    <Tab label="Paper List" />
+                    <Tab label="My Posts" />
+                </Tabs>
+                { value === 0 ? <FavoritePaperList /> : <MyPosts />}
             </Box>
             
             

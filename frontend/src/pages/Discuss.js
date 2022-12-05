@@ -1,7 +1,6 @@
 import {useContext, useState} from 'react';
 import {UserContext} from '../context/UserContext'
 import {Link, Navigate} from "react-router-dom";
-import posts from '../data/mock_data';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
@@ -9,29 +8,83 @@ import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-// import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import Box from '@mui/material/Box';
+import { Toolbar, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {posts} from '../data/mock_data';
 
-function Post (props) {
+
+
+
+
+/*
+    Link to paper
+*/
+function ReferedPaper(props) {
     return (
-    <Card className="post">
+        <Link className='nonstyLink' to={`../paper/${props.data.id}`}>
+            <Box sx= {{
+                padding: 2,
+                backgroundColor: '#ede7f6',
+                opacity: 0.8,
+                '&:hover': {
+                    backgroundColor: 'secondary.light',
+                    opacity: 1
+                }
+            }}>
+                <Typography variant="subtitle1" color="text.primary" noWrap>
+                    {props.data.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" noWrap>
+                    {props.data.venue + ' ' + props.data.year + ' ' +  props.data.citations}
+                </Typography>
+            </Box>
+        </Link>
+    )
+}
+
+
+/* Post Item
+- User Avatar
+- User name
+- content 
+- link to paper 
+- likes
+*/
+function Post (props) {
+    const { user } = useContext(UserContext);
+    const [color, setColor] = useState('grey');
+
+    const handleFavChange = (e) => {
+        if (color === 'grey') {
+            setColor('red');
+        } else {
+            setColor('grey');
+        }
+    }
+
+    return (
+    <Card sx={{width:700}}>
         <CardHeader 
             avatar={
-            <Avatar sx={{ bgcolor: 'blue' }} aria-label="recipe">
+            <Avatar sx={{ bgcolor: 'secondary.main' }} aria-label="recipe">
             {props.data.User_name[0]}
             </Avatar>
             } 
-        title={props.data.User_name}
-        subheader={new Date(props.data.Created_date).toDateString()}
+            action={
+                <IconButton aria-label="add to favorites" onClick={handleFavChange}>
+                    <FavoriteIcon sx={{color: color}}/>
+                </IconButton>
+              }
+            title={props.data.User_name}
+            subheader={new Date(props.data.Created_date).toDateString()}
         />
         <CardContent>
-            {props.data.Content}
+            <Typography variant="body1" color="text.primary">
+                {props.data.Content}
+            </Typography>
         </CardContent>
-        <CardActions disableSpacing>
-            <button>Like</button>
-        {/* <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton> */}
-      </CardActions>
+        <ReferedPaper data={props.data.Paper}/>
     </Card>)
 }
 
@@ -45,21 +98,46 @@ function Post (props) {
 */
 function Discuss (props) {
     const { user } = useContext(UserContext);
-    if (!user || !user.auth) return <Navigate to="/login" />;
+    const [sortKey, setSortKey] = useState('date');
 
+    if (!user || !user.auth) return <Navigate to="/login" />;
+    
+    const handleSortKeyChange = (event, newKey) => {
+      setSortKey(newKey);
+    };
 
     return (
         <>
-            <h1>Current Field: {user.field}</h1>
+        <Toolbar>
+            <Typography variant="h6" noWrap component="div">
+                Research Field: {user.field}
+            </Typography>
+            <Box sx={{ flexGrow: 1 }} />
+            <Box >
+            <ToggleButtonGroup
+                color="primary"
+                value={sortKey}
+                exclusive
+                onChange={handleSortKeyChange}
+                aria-label="sort key"
+                >
+                <ToggleButton value="date">Most Recent</ToggleButton>
+                <ToggleButton value="like">Most Likes</ToggleButton>
+                </ToggleButtonGroup>
+            </Box>
+        </Toolbar>
+            <h1></h1>
             <div className='new-post'>
             
             </div>
-            <div className='post-stream'>
+            <Box sx={{ justifyContent: "center", display: "flex"}}>
+                <Stack spacing={2}>
                 {posts.map((post, idx) => {
                     return <Post key={idx} data={post} />;
                 })}
-            </div>
-
+                </Stack>
+            </Box>
+            
         </>
     );
 }

@@ -1,3 +1,13 @@
+const paper = {
+    'id':123,
+    'title': "paper A",
+    'year': "2022",
+    'authors': ["Author A", "Author B", "Author C", "Author D"],
+    'citations': 30,
+    'abstract': "A long abstract",
+    'venue': "ACCV"
+};
+
 const posts = [
     {
         "Created_date": Date('2022-10-12'),
@@ -5,7 +15,7 @@ const posts = [
         "User_name": 'testPoster1',
         "Content": 'This is a post.',
         "Like_users": [],
-        "Paper": "PaperId123",
+        "Paper": paper,
         "Field": "Data Mining"
     },
     {
@@ -14,7 +24,7 @@ const posts = [
         "User_name": 'testPoster1',
         "Content": 'This is a post.',
         "Like_users": [],
-        "Paper": "PaperId123",
+        "Paper": paper,
         "Field": "Machine Learning"
     },
     {
@@ -23,7 +33,7 @@ const posts = [
         "User_name": 'testPoster2',
         "Content": 'This is a post.',
         "Like_users": [],
-        "Paper": "PaperId123",
+        "Paper": paper,
         "Field": "testField"
     },
     
@@ -33,7 +43,7 @@ const posts = [
         "User_name": 'testPoster1',
         "Content": 'This is a post.',
         "Like_users": [],
-        "Paper": "PaperId123",
+        "Paper": paper,
         "Field": "testField"
     }
 ];
@@ -42,8 +52,11 @@ const users = [
 
 ]
 
+
+
 const papers = [
     {
+    'id':123,
     'name': "paper A",
     'year': "2022",
     'authors': ["Author A", "Author B", "Author C", "Author D"],
@@ -53,6 +66,7 @@ const papers = [
     },
 
     {
+        'id':1234,
         'name': "paper B",
         'year': "2024",
         'authors': ["Author A"],
@@ -64,4 +78,4 @@ const papers = [
 ]
 
 
-export default posts;
+export {posts, paper, papers} ;

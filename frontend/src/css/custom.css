@@ -29,11 +29,11 @@
   margin: 20px auto;
 }
 
-.navLink { 
+.nonstyLink { 
   text-decoration: none; 
   color: white;
 }
 
-.navLink::after {
+.nonstyLink::after {
   color: white;
 }

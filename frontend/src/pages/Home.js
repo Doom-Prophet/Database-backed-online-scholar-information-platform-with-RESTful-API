@@ -18,12 +18,11 @@ const Home = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: 'none', sm: 'block' } }}
           >
-            <Link className='navLink' to="discuss">Scholar Plus</Link>
+            <Link className='nonstyLink' to="discuss">Scholar Plus</Link>
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Box >
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -31,10 +30,10 @@ const Home = () => {
               aria-haspopup="true"
               color="inherit"
             >
-              <Link className='navLink' to="discuss"><Diversity3Icon /></Link>
+              <Link className='nonstyLink' to="discuss"><Diversity3Icon /></Link>
             </IconButton>
           </Box>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Box >
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -42,10 +41,10 @@ const Home = () => {
               aria-haspopup="true"
               color="inherit"
             >
-              <Link className='navLink' to="search" ><SearchIcon /></Link>
+              <Link className='nonstyLink' to="search" ><SearchIcon /></Link>
             </IconButton>
           </Box>
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+          <Box >
             <IconButton
               size="large"
               aria-label="account of current user"
@@ -53,7 +52,7 @@ const Home = () => {
               aria-haspopup="true"
               color="inherit"
             >
-              <Link className='navLink' to="profile"><AccountCircle /></Link>
+              <Link className='nonstyLink' to="profile"><AccountCircle /></Link>
             </IconButton>
           </Box>
         </Toolbar>
