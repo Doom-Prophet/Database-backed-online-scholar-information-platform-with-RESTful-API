@@ -57,7 +57,7 @@ const users = [
 const papers = [
     {
     'id':123,
-    'name': "paper A",
+    'title': "paper A",
     'year': "2022",
     'authors': ["Author A", "Author B", "Author C", "Author D"],
     'citations': 30,
@@ -67,7 +67,7 @@ const papers = [
 
     {
         'id':1234,
-        'name': "paper B",
+        'title': "paper B",
         'year': "2024",
         'authors': ["Author A"],
         'citations': 12,
