@@ -6,6 +6,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Toolbar, Typography } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import Diversity3Icon from '@mui/icons-material/Diversity3';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 
 const Home = () => {
 
@@ -22,6 +23,17 @@ const Home = () => {
             <Link className='nonstyLink' to="discuss">Scholar Plus</Link>
           </Typography>
           <Box sx={{ flexGrow: 1 }} />
+          <Box >
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <Link className='nonstyLink' to="post"><AddCircleIcon /></Link>
+            </IconButton>
+          </Box>
           <Box >
             <IconButton
               size="large"

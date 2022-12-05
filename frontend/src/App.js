@@ -9,7 +9,7 @@ import UserProfile from "./pages/UserProfile";
 import Login from "./pages/Login";
 import Signup from './pages/Signup';
 import Paper from "./pages/Paper";
-
+import NewPost from "./pages/NewPost";
 
 
 function App() {
@@ -19,6 +19,7 @@ function App() {
         <Route path="/" element={<Home />}>
           <Route path="search" element={<Search />} />
           <Route path="discuss" element={<Discuss />} />
+          <Route path="post" element={<NewPost />} />
           <Route path="profile" element={<UserProfile />} />
           <Route path="login" element={<Login />} />
           <Route path="signup" element={<Signup />} />
