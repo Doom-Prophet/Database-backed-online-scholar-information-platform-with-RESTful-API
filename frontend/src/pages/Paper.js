@@ -65,7 +65,10 @@ const Paper = (props) => {
       </Typography>
     </Box>
     <Box sx={{ justifyContent: "center", display: "flex"}}>
-      <Button variant='contained' onClick={() => navigate(-1)} >Go back</Button>
+      <Stack direction="row" spacing={2}>
+        <Button variant='contained' onClick={() => navigate(-1)} >Go back</Button>
+        <Button variant='contained' onClick={() => navigate('/post')} >Add Post</Button>
+      </Stack>
     </Box>
     </>
     

@@ -5,49 +5,13 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
 import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Box from '@mui/material/Box';
 import { Toolbar, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import {posts} from '../data/mock_data';
-
-
-
-
-
-/*
-    Link to paper
-*/
-function ReferedPaper(props) {
-    return (
-        <Link className='nonstyLink' to={`../paper/${props.data.id}`}>
-            <Box sx= {{
-                padding: 2,
-                backgroundColor: '#ede7f6',
-                opacity: 0.8,
-                '&:hover': {
-                    backgroundColor: 'secondary.light',
-                    opacity: 1
-                }
-            }}>
-                <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
-                     <Typography variant="h6" color="text.primary">
-                    {props.data.title}
-                    </Typography>
-                    <Typography variant="subtitle1" color="text.secondary">
-                    {props.data.venue + ' ' + props.data.year}
-                    </Typography>
-                </Stack>
-                <Typography variant="body1" color="text.secondary">
-                    {props.data.abstract.slice(0, Math.min(props.data.abstract.length, 200)) + '...'}
-                </Typography>
-                
-            </Box>
-        </Link>
-    )
-}
+import PaperItem from '../components/PaperItem'
 
 
 /* Post Item
@@ -90,7 +54,9 @@ function Post (props) {
                 {props.data.Content}
             </Typography>
         </CardContent>
-        <ReferedPaper data={props.data.Paper}/>
+        <Link className='nonstyLink' to={`../paper/${props.data.Paper.id}`}>
+            <PaperItem data={props.data.Paper} />
+        </Link>
     </Card>)
 }
 
