@@ -1,7 +1,7 @@
 import {useContext, useState} from 'react';
 import {UserContext} from '../context/UserContext'
 import {Link, Navigate} from "react-router-dom";
-import {Stack, Typography, Box, Tabs, Tab} from '@mui/material';
+import {Stack, Typography, Box, Tabs, Tab, Button} from '@mui/material';
 import {posts, papers} from '../data/mock_data';
 import StarIcon from '@mui/icons-material/Star';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
@@ -107,7 +107,7 @@ function MyPosts (props) {
     - else show posts
 */
 function UserProfile (props) {
-    const { user } = useContext(UserContext);
+    const { user, logout } = useContext(UserContext);
     const [value, setValue] = useState(0);
 
     if (!user || !user.auth) return <Navigate to="/login" />;
@@ -118,16 +118,21 @@ function UserProfile (props) {
 
     return (
         <>
-            <Stack sx={{ width: '100%', bgcolor: 'background.paper', margin: 5}} spacing={1}>
+            <Stack sx={{bgcolor: 'background.paper', margin: 5}} spacing={1}>
+                <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Typography variant="h3" color="text.primary">
                     Hi, {user.name}
                 </Typography>
+                <Button variant='outlined' onClick={logout} sx={{width:100}}>Log out</Button>
+                </Stack>
+                
                 <Typography variant="subtitle2" color="text.secondary">
                     Email: {user.email} 
                 </Typography>
                 <Typography variant="subtitle2" color="text.secondary">
                     Research Field: {user.field}
                 </Typography>
+                
             </Stack>
             
             <Box sx={{ width: '100%', bgcolor: 'background.paper', mt: 5}}>
