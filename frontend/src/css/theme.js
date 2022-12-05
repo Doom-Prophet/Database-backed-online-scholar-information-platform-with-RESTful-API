@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 const theme = createTheme({
   palette: {
     primary: {
-      main: purple[500],
+      main: purple[700],
     },
     secondary: {
       main: orange[500],

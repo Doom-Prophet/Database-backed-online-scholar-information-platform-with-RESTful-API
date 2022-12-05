@@ -1,31 +1,64 @@
 import { Outlet, Link } from "react-router-dom";
-import {useContext} from 'react';
-import {UserContext} from '../context/UserContext';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import IconButton from '@mui/material/IconButton';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import { Toolbar, Typography } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import Diversity3Icon from '@mui/icons-material/Diversity3';
 
+const Home = () => {
 
-
-const Layout = () => {
-  const { user, logout } = useContext(UserContext);
   return (
     <>
-    <div>
-      <nav>
-        <ul>
-          <li>
-            <Link to="search">Search</Link>
-          </li>
-          <li>
-            <Link to="discuss">Discuss</Link>
-          </li>
-          <li>
-            <Link to="profile">Profile</Link>
-          </li>
-          {user && user.auth ? <li>
-            <button onClick={logout}>Log out</button>
-          </li> : false}          
-        </ul>
-      </nav>      
-    </div>
+    <Box sx={{ flexGrow: 1 }}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography
+            variant="h6"
+            noWrap
+            component="div"
+            sx={{ display: { xs: 'none', sm: 'block' } }}
+          >
+            <Link className='navLink' to="discuss">Scholar Plus</Link>
+          </Typography>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <Link className='navLink' to="discuss"><Diversity3Icon /></Link>
+            </IconButton>
+          </Box>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <Link className='navLink' to="search" ><SearchIcon /></Link>
+            </IconButton>
+          </Box>
+          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              color="inherit"
+            >
+              <Link className='navLink' to="profile"><AccountCircle /></Link>
+            </IconButton>
+          </Box>
+        </Toolbar>
+        </AppBar>
+    </Box>
 
 
       <Outlet />      
@@ -33,4 +66,4 @@ const Layout = () => {
   )
 };
 
-export default Layout;
+export default Home;

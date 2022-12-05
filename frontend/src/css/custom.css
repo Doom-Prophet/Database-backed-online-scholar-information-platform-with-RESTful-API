@@ -28,3 +28,12 @@
   text-align: center;
   margin: 20px auto;
 }
+
+.navLink { 
+  text-decoration: none; 
+  color: white;
+}
+
+.navLink::after {
+  color: white;
+}
