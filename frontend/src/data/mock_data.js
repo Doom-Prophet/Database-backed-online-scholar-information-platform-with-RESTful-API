@@ -1,6 +1,6 @@
 const paper = {
     'id':123,
-    'title': "paper A",
+    'title': "Practical Machine Learning Tools and Techniques",
     'year': "2022",
     'authors': ["Author A", "Author B", "Author C", "Author D"],
     'citations': 30,

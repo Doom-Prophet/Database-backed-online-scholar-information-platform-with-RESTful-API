@@ -78,7 +78,7 @@ function Post (props) {
             </Avatar>
             } 
             action={
-                <IconButton aria-label="add to favorites" onClick={handleFavChange}>
+                <IconButton aria-label="like" onClick={handleFavChange}>
                     <FavoriteIcon sx={{color: color}}/>
                 </IconButton>
               }
