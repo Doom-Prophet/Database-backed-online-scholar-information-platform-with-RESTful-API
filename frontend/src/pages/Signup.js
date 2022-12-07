@@ -2,9 +2,6 @@ import {useContext, useState} from 'react';
 import {UserContext} from '../context/UserContext';
 import {Link, Navigate} from "react-router-dom";
 import {Box, Stack, Button, TextField, Alert, Typography, Autocomplete} from '@mui/material';
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.14.0/firebase-app.js';
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.14.0/firebase-auth.js";
-// import firebase from 'firebase';
 import {signOutWithFirebase} from '../firebase'
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;

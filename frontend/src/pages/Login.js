@@ -3,22 +3,31 @@ import {UserContext} from '../context/UserContext'
 import {Link, Navigate} from "react-router-dom";
 import {Box, Stack, Button, TextField, Alert, Typography} from '@mui/material';
 import {signInWithFirebase} from '../firebase';
+import {GetUser} from '../data/userAPI';
 
 function Login (props) {
     const { user, login } = useContext(UserContext);
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');       
-    const [error, setError] = useState('');
-
+    const [errorMessage, setError] = useState('');
+    // const { data, error } = GetUser({ email: email });
+    
     if (user && user.auth) return <Navigate to="/profile" />;
 
     const handleLogin = (e) => {
+        e.preventDefault();
         signInWithFirebase(email, password)
         .then((results) => {
-            login({email: email});
-            setError('');
+            GetUser(email)
+                .then((user) => {
+                    login(user);
+                })
+                .catch((error) => {
+                    setError('Server error');
+                })            
         })
         .catch((error) => {
+            console.log(error);
             setError('Invalid Email or Password');
         });
     }
@@ -33,7 +42,7 @@ function Login (props) {
             padding: '20px 50px',
             mt: 10
             }}>
-            <Typography variant="h1" className="centered">Log In</Typography>
+            <Typography variant="h4" className="centered">Log In</Typography>
             <form>
                 <Stack spacing={1} sx={{ width: 300 }}>
                 <TextField className="inputText" variant="standard" label="Email" 
@@ -44,7 +53,7 @@ function Login (props) {
                     required/>
                 <Button variant="contained" onClick={handleLogin}>Log in</Button>
                 <Link className="centered" to='../signup'>Need an account? Sign up now </Link>
-                { error ? <Alert severity="error">{error}</Alert> : false}
+                { errorMessage ? <Alert severity="error">{errorMessage}</Alert> : false}
                 </Stack>
             </form>
         </Box>

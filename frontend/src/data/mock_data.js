@@ -48,9 +48,11 @@ const posts = [
     }
 ];
 
-const users = [
-
-]
+const user = {
+    "user_name":"testname",
+    "email":"test@email.com",
+    "research_field":"testField"
+}
 
 
 
