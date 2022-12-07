@@ -2,7 +2,9 @@ import {useContext, useState} from 'react';
 import {UserContext} from '../context/UserContext';
 import {Link, Navigate} from "react-router-dom";
 import {Box, Stack, Button, TextField, Alert, Typography, Autocomplete} from '@mui/material';
-import {signOutWithFirebase} from '../firebase'
+import {signOutWithFirebase} from '../firebase';
+import {PostUser} from '../data/userAPI';
+
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const EMAIL_REGEX = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
@@ -33,9 +35,14 @@ function Signup (props) {
         else {
             signOutWithFirebase(email, password)
             .then((res) => {
-                console.log(res);
-                signup({email: email, name: name, field: field});
-                setError('');
+                PostUser({ email: email, name: name, field: field})
+                .then((user) => {
+                    signup(user);
+                    setError('');
+                })
+                .catch((error) => {
+                    setError('Server error. Please try again.');
+                })        
             })
             .catch((error) => {
                 setError('User Exists!');

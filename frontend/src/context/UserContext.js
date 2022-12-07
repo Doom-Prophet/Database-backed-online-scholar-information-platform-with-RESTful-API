@@ -9,6 +9,7 @@ const UserProvider = ({ children }) => {
     
     const login = (user) => {
           setUser({
+            id: user.id,
             name: user.name,
             email: user.email,
             field: user.field,
@@ -18,6 +19,7 @@ const UserProvider = ({ children }) => {
 
     const signup = (user) => {
         setUser({
+            id: user.id,
             name: user.name,
             email: user.email,
             field: user.field,
@@ -26,7 +28,7 @@ const UserProvider = ({ children }) => {
     };
   
     const logout = () => {
-      setUser({ email: '', name: '', field: '', auth: false });
+      setUser({ id:'', email: '', name: '', field: '', auth: false });
     };
   
     return (
