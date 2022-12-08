@@ -1,17 +1,22 @@
-import {useContext, useState} from 'react';
+import {useContext, useState, useEffect} from 'react';
 import {UserContext} from '../context/UserContext'
 import {Link, Navigate} from "react-router-dom";
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import Avatar from '@mui/material/Avatar';
-import CardContent from '@mui/material/CardContent';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
+import {
+    Box,
+    Card,
+    CardHeader,
+    Avatar,
+    CardContent,
+    IconButton,
+    Typography, 
+    Toolbar, 
+    Stack, 
+    ToggleButton, 
+    ToggleButtonGroup
+  } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import Box from '@mui/material/Box';
-import { Toolbar, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import {posts} from '../data/mock_data';
-import PaperItem from '../components/PaperItem'
+import PaperItem from '../components/PaperItem';
+import {GetPosts} from '../data/API';
 
 
 /* Post Item
@@ -22,10 +27,11 @@ import PaperItem from '../components/PaperItem'
 - likes
 */
 function Post (props) {
-    const { user } = useContext(UserContext);
+    // const { user } = useContext(UserContext);
     const [color, setColor] = useState('grey');
 
     const handleFavChange = (e) => {
+        // TODO 
         if (color === 'grey') {
             setColor('red');
         } else {
@@ -54,8 +60,8 @@ function Post (props) {
                 {props.data.Content}
             </Typography>
         </CardContent>
-        <Link className='nonstyLink' to={`../paper/${props.data.Paper.id}`}>
-            <PaperItem data={props.data.Paper} />
+        <Link className='nonstyLink' to={`../paper/${props.data.Paper}`}>
+            <PaperItem id={props.data.Paper} />
         </Link>
     </Card>)
 }
@@ -71,9 +77,23 @@ function Post (props) {
 function Discuss (props) {
     const { user } = useContext(UserContext);
     const [sortKey, setSortKey] = useState('date');
+    const [posts, setPosts] = useState([]);
 
-    if (!user || !user.auth) return <Navigate to="/login" />;
-    
+    // TODO: update periodically
+    useEffect( () => {
+        if (user && user.field) {
+            GetPosts(user.field)
+            .then(posts => {
+                setPosts(posts);
+            })
+            .catch((err)=> {
+            console.log(err);
+            })
+         }
+      }, [user]);
+
+    if (!user) return <Navigate to="/login" />;
+
     const handleSortKeyChange = (event, newKey) => {
       setSortKey(newKey);
     };
@@ -98,10 +118,7 @@ function Discuss (props) {
                 </ToggleButtonGroup>
             </Box>
         </Toolbar>
-            <h1></h1>
-            <div className='new-post'>
-            
-            </div>
+            {!posts ? false :
             <Box sx={{ justifyContent: "center", display: "flex"}}>
                 <Stack spacing={2}>
                 {posts.map((post, idx) => {
@@ -109,7 +126,7 @@ function Discuss (props) {
                 })}
                 </Stack>
             </Box>
-            
+            }
         </>
     );
 }

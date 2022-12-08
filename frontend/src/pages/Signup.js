@@ -3,11 +3,11 @@ import {UserContext} from '../context/UserContext';
 import {Link, Navigate} from "react-router-dom";
 import {Box, Stack, Button, TextField, Alert, Typography, Autocomplete} from '@mui/material';
 import {signOutWithFirebase} from '../firebase';
-import {PostUser} from '../data/userAPI';
+import {PostUser} from '../data/API';
 
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
-const EMAIL_REGEX = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+const EMAIL_REGEX = /^([A-Za-z0-9_\-.])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,4})$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const FIELDs =  [ "testField","testField2"];
 
@@ -19,7 +19,7 @@ function Signup (props) {
     const [field, setField] = useState('');
     const [error, setError] = useState('');
 
-    if (user && user.auth) return <Navigate to="/profile" />;
+    if (user) return <Navigate to="/profile" />;
 
     const handleSignup = (e) => {
 

@@ -1,19 +1,48 @@
-import {Box, Input, Stack, Typography, Button, Autocomplete, TextField} from '@mui/material';
-import {useContext, useState} from 'react';
+import {Box, Input, Stack, Typography, Button, Autocomplete, TextField, Alert} from '@mui/material';
+import {useContext, useState, useEffect} from 'react';
 import {UserContext} from '../context/UserContext';
-import {Link, Navigate} from "react-router-dom";
-import {papers} from '../data/mock_data';
+import {useNavigate, Navigate} from "react-router-dom";
+import {PostPost, GetPaperList} from '../data/API';
+
 
 function NewPost (props) {
-  const { user } = useContext(UserContext);
+  const { user, addPost } = useContext(UserContext);
   const [content, setContent] = useState('');
-  const [title, setTitle] = useState('');
+  const [paper, setPapaer] = useState('');
+  const [options, setOptions] = useState([]);
+  const [errorMessage, setErrorMessage] = useState('');
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    GetPaperList()
+      .then((papers) => {
+        setOptions(papers);
+      })
+      .catch((err) => console.error(err))
+  }, []);
 
-  if (!user || !user.auth) return <Navigate to="/login" />;
+  if (!user) return <Navigate to="/login" />;
  
+  // TODO: Some bugs here
   const handleSubmit = (e) => {
-
+    e.preventDefault();
+    if (!content || !paper) {
+      setErrorMessage("Please enter the content and the paper");
+    } else {
+      console.log(paper)
+      PostPost({
+        User_id: user.id,
+        User_name: user.name,
+        Content: content,
+        Paper: paper,
+        Field: user.field
+      }).then((res) => {
+        console.log(res)
+        addPost(res._id);
+        navigate("/discuss");
+      })
+      .catch((err) => {setErrorMessage("Server Error.");}); 
+    }
   }
 
   const handleContentChange = (e) => {
@@ -32,8 +61,8 @@ function NewPost (props) {
       borderRadius: 10
     }}>
 
-      <Typography variant='h4' sx={{mb:3}} align='center'>Add your post</Typography>
-      <from>
+      <Typography variant='h4' sx={{mb:3}} align='center'>Add Your Post</Typography>
+
         <Typography variant='subtitle1'>Content:</Typography>
         <TextField
           multiline
@@ -56,10 +85,14 @@ function NewPost (props) {
         <Typography variant='subtitle1'>Paper: </Typography>
         <Autocomplete
         freeSolo
-        options={papers.map((option) => option.title)}
+        options={options}
+        getOptionLabel={(option) => option.title}
+        onChange={(e, value)=>{
+            e.preventDefault();
+            setPapaer(value._id);
+          }}
         renderInput={(params) => 
-              <TextField {...params} placeholder="Enter Paper's Title..." required 
-                onChange={(e)=>{setTitle(e.target.value)}}/>}
+              <TextField {...params} placeholder="Enter Paper's Title..." required />}
         sx={{
           backgroundColor:'white',
           opacity: 0.8,
@@ -71,9 +104,9 @@ function NewPost (props) {
         }}
         />
         <Box sx={{ justifyContent: "center", display: "flex"}}>
-          <Button variant='contained' onSubmit={handleSubmit} >Post</Button>
+          <Button variant='contained' onClick={handleSubmit} >Post</Button>
         </Box>
-      </from>
+        { errorMessage ? <Alert severity="error">{errorMessage}</Alert> : false}
       
     </Box>
     </>

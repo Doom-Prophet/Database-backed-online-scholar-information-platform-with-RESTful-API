@@ -26,9 +26,9 @@ function sortResult(data, sortKey, sortOrder) {
   
 
 function Search (props) {
-    const { user } = useContext(UserContext);
+    // const { user } = useContext(UserContext);
     const [results, setResults] = useState([]);
-    const [sortKey, setSortKey] = useState('Created_date');
+    const [sortKey, setSortKey] = useState('year');
     const [sortOrder, setSortOrder] = useState("ASC");
     // if (!user || !user.auth) return <Navigate to="/login" />;
 
@@ -81,7 +81,7 @@ function Search (props) {
             <Box sx={{ width: 800 }}>
                 <Stack>
                     {sortedResult().map((paper)=>{return (
-                        <Link className='nonstyLink' key={paper._id} to={`../paper/${paper.id}`}>
+                        <Link className='nonstyLink' key={paper._id} to={`../paper/${paper._id}`}>
                             <PaperItem key={paper._id} id={paper._id} />
                         </Link>
                     )

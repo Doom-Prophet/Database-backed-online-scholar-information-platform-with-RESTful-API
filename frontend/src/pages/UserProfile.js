@@ -1,21 +1,21 @@
-import {useContext, useState} from 'react';
+import {useContext, useState, useEffect} from 'react';
 import {UserContext} from '../context/UserContext'
 import {Link, Navigate} from "react-router-dom";
-import {Stack, Typography, Box, Tabs, Tab, Button} from '@mui/material';
-import {posts, papers} from '../data/mock_data';
+import {Stack, Typography, Box, Tabs, Tab, Button, IconButton} from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import IconButton from '@mui/material/IconButton';
 import PaperItem from '../components/PaperItem';
+import {GetPosts} from '../data/API';
 
 function FavPaperItem(props) {
     const [color, setColor] = useState('orange');
     const { user } = useContext(UserContext);
 
-    if (!user || !user.auth) 
+    if (!user) 
         return <Navigate to="/login" />;  
 
     const handleFavChange = (e) => {
+        // TODO
         if (color === 'grey') {
             setColor('orange');
         } else {
@@ -28,8 +28,8 @@ function FavPaperItem(props) {
             <StarIcon sx={{color: color}}/>
             </IconButton>
             <Box sx={{width: 800}}>
-                <Link className='nonstyLink' to={`../paper/${props.data.id}`}>
-                <PaperItem data={props.data} />
+                <Link className='nonstyLink' to={`../paper/${props.id}`}>
+                <PaperItem id={props.id} />
             </Link>
             </Box>
             
@@ -40,7 +40,7 @@ function FavPaperItem(props) {
 
 function FavoritePaperList(props) {
     return (<Stack>
-        {props.data.map((paper)=>{return <FavPaperItem key={paper.id} data={paper} />})}
+        {props.papers.map((paper, i)=>{return <FavPaperItem key={i} id={paper} />})}
     </Stack>);
 }
 
@@ -74,8 +74,21 @@ function PostItem(props) {
 }
 
 function MyPosts (props) {
+    const [data, setData] = useState([]);
+    // console.log(props.posts)
+    useEffect(() => {
+        GetPosts(null, props.posts)
+            .then( res => {
+                // console.log(res)
+                setData(res);
+            })
+            .catch( err => { console.log(err);})
+    }, [props.posts]);
+
+    if (!props.posts || !data)
+        return <></>;
     return (<Stack>
-        {props.data.map((post)=>{return <PostItem key={post.id} data={post} />})}
+        {data.map((post, i)=>{return <PostItem key={i} data={post} />})}
     </Stack>);
 }
 
@@ -88,11 +101,12 @@ function MyPosts (props) {
     - else show posts
 */
 function UserProfile (props) {
-    const { user, logout } = useContext(UserContext);
+    const { user, user_posts, user_fav_papers, logout } = useContext(UserContext);
     const [value, setValue] = useState(0);
 
-    if (!user || !user.auth) return <Navigate to="/login" />;
+    if (!user) return <Navigate to="/login" />;
 
+    
     const handleChange = (e, newvalue) => {
         setValue(newvalue);
     };
@@ -116,7 +130,6 @@ function UserProfile (props) {
                 <Typography variant="subtitle2" color="text.secondary">
                     Research Field: {user.field}
                 </Typography>
-            
             </Stack>
             
             <Box sx={{ width: '100%', bgcolor: 'background.paper', mt: 5}}>
@@ -126,7 +139,8 @@ function UserProfile (props) {
                 </Tabs>
             </Box>
             <Box sx={{ justifyContent: "center", display: "flex", width: '100%'}}>
-                { value === 0 ? <FavoritePaperList data={papers}/> : <MyPosts data={posts}/>}
+                { value === 0 ? <FavoritePaperList papers={user_fav_papers}/> 
+                    : <MyPosts posts={user_posts}/>}
             </Box> 
         </>
     );

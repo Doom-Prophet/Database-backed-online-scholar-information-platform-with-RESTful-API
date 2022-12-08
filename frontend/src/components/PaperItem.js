@@ -1,7 +1,21 @@
 import {Box, Stack, Typography} from '@mui/material';
+import {GetPaperDetail} from '../data/API';
+import {useState, useEffect} from 'react';
 
 
 function PaperItem (props) {
+  const [paper, setPaper] = useState(null);
+
+  useEffect( () => {
+    GetPaperDetail(props.id)
+    .then(paper => {
+      setPaper(paper);
+    })
+    .catch((err)=> {
+      console.log(err);
+    })
+  }, [props.id]);
+
   return (
     <Box sx= {{
       padding: 2,
@@ -12,18 +26,21 @@ function PaperItem (props) {
           opacity: 1
       }
       }}>
+      {!paper ? false :
+      <>
       <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
           <Typography variant="h6" color="text.primary">
-          {props.data.title}
+          {paper.title}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary">
-          {props.data.venue + ' ' + props.data.year}
+          {paper.venue + ' ' + paper.year}
           </Typography>
       </Stack>
       <Typography variant="body1" color="text.secondary">
-          {props.data.abstract.slice(0, Math.min(props.data.abstract.length, 100)) + '...'}
+          {paper.abstract.slice(0, Math.min(paper.abstract.length, 100)) + '...'}
       </Typography>
-                      
+      </>
+      }     
       </Box>
   )
 }
