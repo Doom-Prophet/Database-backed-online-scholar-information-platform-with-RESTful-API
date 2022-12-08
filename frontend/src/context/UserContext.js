@@ -1,62 +1,61 @@
 import {createContext, useState} from 'react';
-// import axios from 'axios';
 
-// const baseURL = 'https://9bfeaf60-09b0-4a0d-b89d-475ab011b395.mock.pstmn.io'
 
-const UserContext = createContext({ email: '', name: '', field: '', auth: false });
+const UserContext = createContext();
+
 
 const UserProvider = ({ children }) => {
-    const [user, setUser] = useState({ email: '', name: '', field: '', auth: false });
-    const [error, setError] = useState('');
+    const [user, setUser] = useState(null);
+    const [user_posts, setPosts] = useState([]);
+    const [user_fav_papers, setPapers] = useState([]);
     
-    const login = (email, password) => {
-      // axios.get(baseURL+'/users', {data: {email:email, password:password}})
-      // .then(response => {
-      //   // if login successfully
-      //   if (response.statusCode === 200) {
-      //     const user = response.data;
-      //     setUser((user) => ({
-      //       name: user.name,
-      //       email: user.email,
-      //       field: user.field,
-      //       auth: true,
-      //     }));
-      //   }
-      //   else {
-      //     setError(response.message);
-      //   }
-      // })
-      // .catch(err => {console.log(err); setError(err);});
-      // if login successfully
-      setUser((user) => ({
-        name: 'testName',
-        email: email,
-        field: 'testField',
-        auth: true,
-      }));
-    };
-
-    const signup = (user) => {
-        // axios.post(baseURL+'/users', {data: user})
-        // .then(response => {
-        //     return response;
-        // })
-        // .catch(err => {});
-
-        setUser((user) => ({
+    const login = (user) => {
+          setUser({
+            id: user.id,
             name: user.name,
             email: user.email,
-            field: user.field,
-            auth: true,
-          }));
+            field: user.field
+          });
+          setPapers(user.papers);
+          setPosts(user.posts);
+        };
+
+    const signup = (user) => {
+        setUser({
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            field: user.field
+          });
+        setPapers(user.papers);
+        setPosts(user.posts);
     };
   
     const logout = () => {
-      setUser((user) => ({ email: '', name: '', field: '', auth: false }));
+      setUser(null);
+      setPapers([]);
+      setPosts([]);
     };
+
+    const addPost = (postID) => {
+      setPosts([...user_posts, postID]);
+    }
+    
+    const removePost = (postID) => {
+      setPosts(user_posts.filter((id) => id !== postID));
+    }
+
+    const addPaper = (paperID) => {
+      setPapers([...user_fav_papers, paperID]);
+    }
   
+    const removePaper = (paperID) => {
+      setPapers(user_fav_papers.filter((id) => id !== paperID));
+    }
+
+
     return (
-      <UserContext.Provider value={{ user, login, signup, logout }}>
+      <UserContext.Provider value={{ user, user_posts, user_fav_papers, login, signup, logout, addPost, removePost, addPaper, removePaper }}>
         {children}
       </UserContext.Provider>
     );

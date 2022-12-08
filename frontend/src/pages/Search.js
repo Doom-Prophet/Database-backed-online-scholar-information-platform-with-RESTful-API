@@ -1,17 +1,16 @@
 import {useContext, useState, useEffect} from 'react';
 import {UserContext} from '../context/UserContext'
 import {Link, Navigate} from "react-router-dom";
-import {papers} from "../data/mock_data";
 import PaperItem from '../components/PaperItem';
 import SearchBar from '../components/SearchBar';
 import {Box, Stack, Typography, ToggleButton, ToggleButtonGroup} from '@mui/material';
-
+import {GetPaperList} from "../data/API";
 
 
 const sortFunc = (key) => {
     return (a, b) => {
-      if (a[key] > b[key]) return 1;
-      if (a[key] < b[key]) return -1; 
+      if (a[key] > b[key]) return -1;
+      if (a[key] < b[key]) return 1; 
       return 0;
     }
 }
@@ -27,21 +26,26 @@ function sortResult(data, sortKey, sortOrder) {
   
 
 function Search (props) {
-    const { user } = useContext(UserContext);
-    const [results, setResults] = useState(papers);
-    const [sortKey, setSortKey] = useState('date');
+    // const { user } = useContext(UserContext);
+    const [results, setResults] = useState([]);
+    const [sortKey, setSortKey] = useState('year');
     const [sortOrder, setSortOrder] = useState("ASC");
-    if (!user || !user.auth) return <Navigate to="/login" />;
+    // if (!user || !user.auth) return <Navigate to="/login" />;
 
     const handleInputChange = (event) => {
-        console.log(event.target.value);
+        event.preventDefault();
+        GetPaperList(event.target.value)
+          .then((paperList) => {
+            setResults(paperList);
+          })
+          .catch((error) => {
+            console.log(error);
+          })
     }
 
     const sortedResult = () => {
         return sortResult(results,sortKey, sortOrder);
     }
-
-
 
     return (
         <Stack spacing={2} sx={{mt:5}} alignItems='center'>
@@ -57,8 +61,8 @@ function Search (props) {
                         onChange={(e)=>setSortOrder(e.target.value)}
                         aria-label="sort order"
                         >
-                        <ToggleButton value="DESC">Least</ToggleButton>
                         <ToggleButton value="ASC">Most</ToggleButton>
+                        <ToggleButton value="DESC">Least</ToggleButton>
                     </ToggleButtonGroup>  
                     <ToggleButtonGroup
                         color="primary"
@@ -67,22 +71,24 @@ function Search (props) {
                         onChange={(e)=>setSortKey(e.target.value)}
                         aria-label="sort key"
                         >
-                        <ToggleButton value="Created_date">Recent</ToggleButton>
+                        <ToggleButton value="year">Recent</ToggleButton>
                         <ToggleButton value="citations">Citations</ToggleButton>
                     </ToggleButtonGroup>          
                                  
                 </Stack>
             </Box>
+            {!results ? false:
             <Box sx={{ width: 800 }}>
                 <Stack>
                     {sortedResult().map((paper)=>{return (
-                        <Link className='nonstyLink' key={paper.id} to={`../paper/${paper.id}`}>
-                            <PaperItem key={paper.id} data={paper} />
+                        <Link className='nonstyLink' key={paper._id} to={`../paper/${paper._id}`}>
+                            <PaperItem key={paper._id} id={paper._id} />
                         </Link>
                     )
                         })}
                 </Stack>
             </Box>
+            }
         </Stack>
     );
 }

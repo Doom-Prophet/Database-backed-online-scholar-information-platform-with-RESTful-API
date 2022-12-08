@@ -1,13 +1,11 @@
 import { useState, useEffect, useContext} from "react";
-import { useParams, Link, useNavigate, Navigate } from "react-router-dom";
+import { useParams, useNavigate, Navigate } from "react-router-dom";
 import {UserContext} from '../context/UserContext'
-import axios from "axios";
-import NoMatch from "./NoMatch";
 import PropTypes from 'prop-types';
-import {paper} from "../data/mock_data";
-import {Box, Stack, Typography, Button} from '@mui/material';
+import {Box, Stack, Typography, Button, IconButton} from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import {GetPaperDetail} from '../data/API';
+import NoMatch from "./NoMatch";
 
 /*
 Paper detail page
@@ -18,13 +16,24 @@ Paper detail page
 const Paper = (props) => {
   let {id} = useParams();
   const navigate = useNavigate();
-  // const [paper, setPaper] = useState({});
+  const [paper, setPaper] = useState(null);
   const [color, setColor] = useState('grey');
   const { user } = useContext(UserContext);
+  const [isMatch, setIsMatch] = useState(true);
 
-  if (!user || !user.auth) 
-      return <Navigate to="/login" />;  
+  useEffect( () => {
+    GetPaperDetail(id)
+    .then(paper => {
+      setPaper(paper);
+    })
+    .catch((err)=> {
+      setIsMatch(false);
+    })
+  }, [id])
 
+  // if (!user || !user.auth) 
+  //     return <Navigate to="/login" />;  
+  // TODO 
   const handleFavChange = (e) => {
     if (color === 'grey') {
         setColor('orange');
@@ -33,9 +42,14 @@ const Paper = (props) => {
     }
   }
 
-
+  if (!isMatch) {
+    return <NoMatch />;
+  }
+  if (!paper) {
+    return <></>;
+  }
   return (
-    <>
+    <> 
     <Box sx= {{
       pt: 5,
       px: 20
