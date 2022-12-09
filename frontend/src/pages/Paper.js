@@ -18,7 +18,7 @@ const Paper = (props) => {
   const navigate = useNavigate();
   const [paper, setPaper] = useState(null);
   const [color, setColor] = useState('grey');
-  const { user, user_fav_papers, addPaper } = useContext(UserContext);
+  const { user, user_fav_papers, addPaper, removePaper } = useContext(UserContext);
   const [isMatch, setIsMatch] = useState(true);
 
   useEffect( () => {
@@ -53,7 +53,7 @@ const Paper = (props) => {
       setColor('orange');
     } else {
       PutUser({id: user.id , user_fav_papers: curr_paper_list.filter((paperID) => id !== paperID)})
-        .then((user) => addPaper(id))
+        .then((user) => removePaper(id))
         .catch((err) => console.error(err));
       setColor('grey');
     }

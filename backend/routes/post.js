@@ -14,7 +14,7 @@ module.exports = function(router){
     // router.post("/post/:id/delete", post_controller.post_delete_post);
 
     // PUT request to update post.
-    router.put("/post", post_controller.post_update);
+    router.put("/posts", post_controller.post_update);
 
     // POST request to update post.
     // router.post("/post/:id/update", post_controller.post_update_post);

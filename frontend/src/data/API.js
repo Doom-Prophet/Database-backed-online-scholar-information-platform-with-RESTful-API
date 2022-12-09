@@ -157,6 +157,7 @@ const PostPost = (post) => {
 };
 
 const PutPost = (post) => {
+  console.log(post);
   return new Promise((resolve, reject) => {
     axios
     .put(baseURL+'/posts', 

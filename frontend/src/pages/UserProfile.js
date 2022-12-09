@@ -5,20 +5,28 @@ import {Stack, Typography, Box, Tabs, Tab, Button, IconButton} from '@mui/materi
 import StarIcon from '@mui/icons-material/Star';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PaperItem from '../components/PaperItem';
-import {GetPosts} from '../data/API';
+import {GetPosts, PutUser} from '../data/API';
 
 function FavPaperItem(props) {
     const [color, setColor] = useState('orange');
-    const { user } = useContext(UserContext);
+    const { user, user_fav_papers, addPaper, removePaper } = useContext(UserContext);
 
     if (!user) 
         return <Navigate to="/login" />;  
 
     const handleFavChange = (e) => {
-        // TODO
+        const curr_paper_list = user_fav_papers || [];
         if (color === 'grey') {
+            PutUser({id: user.id , favorite_papers: [...curr_paper_list, props.id]})
+            .then((user) => {
+                addPaper(props.id)
+            })
+            .catch((err) => console.error(err));
             setColor('orange');
         } else {
+            PutUser({id: user.id , user_fav_papers: curr_paper_list.filter((paperID) => props.id !== paperID)})
+            .then((user) => removePaper(props.id))
+            .catch((err) => console.error(err));
             setColor('grey');
         }
     }
@@ -39,6 +47,11 @@ function FavPaperItem(props) {
 }
 
 function FavoritePaperList(props) {
+    const [papers, setPapers] = useState([]);
+    useEffect(()=> {
+        setPapers(props.papers);
+    }, [])
+
     if(!props || !props.papers) return <></>
     return (<Stack>
         {props.papers.map((paper, i)=>{return <FavPaperItem key={i} id={paper} />})}

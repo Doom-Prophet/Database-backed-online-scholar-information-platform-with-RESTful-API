@@ -38,15 +38,18 @@ const UserProvider = ({ children }) => {
     };
 
     const addPost = (postID) => {
-      setPosts([...user_posts, postID]);
+      const currposts = user_posts || [];
+      setPosts([...currposts, postID]);
     }
     
     const removePost = (postID) => {
+
       setPosts(user_posts.filter((id) => id !== postID));
     }
 
     const addPaper = (paperID) => {
-      setPapers([...user_fav_papers, paperID]);
+      const currpapers = user_fav_papers || [];
+      setPapers([...currpapers, paperID]);
     }
   
     const removePaper = (paperID) => {

@@ -93,7 +93,7 @@ exports.post_delete = async(req, res) => {
 
 // Display post update form on PUT.
 exports.post_update = async(req, res) => {
-    // console.log("post update body:"+req.body);
+    console.log("post update body:"+req.body.like_users);
   try{
     let result = await postmodel.findOneAndUpdate({ _id: req.body.id }, { like_users: req.body.like_users }, { new: true });
     return res.status(200).json({message:"Success to update post with id:"+req.body.id, data:result});
