@@ -36,7 +36,7 @@ const Paper = (props) => {
     if (user && user_fav_papers && user_fav_papers.includes(id)) {
         setColor('orange');
     }
-  }, [user, user_fav_papers]);
+  }, [id, user, user_fav_papers]);
 
 
   const handleFavChange = (e) => {

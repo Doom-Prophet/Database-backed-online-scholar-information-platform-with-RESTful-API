@@ -16,7 +16,7 @@ import {
   } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PaperItem from '../components/PaperItem';
-import {GetPosts} from '../data/API';
+import {GetPosts, PutPost} from '../data/API';
 
 
 /* Post Item
@@ -27,32 +27,52 @@ import {GetPosts} from '../data/API';
 - likes
 */
 function Post (props) {
-    // const { user } = useContext(UserContext);
+    const { user } = useContext(UserContext);
     const [color, setColor] = useState('grey');
 
+    useEffect(() => {
+        const users = props.like_users;
+        if (users && users.include(user.id)) {
+            setColor('red')
+        } else {
+            setColor('grey')
+        }
+    }, [props.like_users])
+
     const handleFavChange = (e) => {
-        // TODO 
         if (color === 'grey') {
+            const users =  props.like_user || [];
+            PutPost({id: props.data._id , like_user: [...users, user.id]})
+            .then((post) => {
+                console.log('like successfully', post)
+            })
+            .catch((err) => console.error(err));
             setColor('red');
         } else {
             setColor('grey');
         }
     }
 
-    console.log("props.data.paper:"+props.data.paper);
+
 
     return (
     <Card sx={{width:700}}>
         <CardHeader 
+            sx={{paddingRight: 3}}
             avatar={
             <Avatar sx={{ bgcolor: 'secondary.main' }} aria-label="recipe">
             {props.data.user_name[0]}
             </Avatar>
             } 
             action={
+                <Stack direction="row" alignItems="center">
                 <IconButton aria-label="like" onClick={handleFavChange}>
-                    <FavoriteIcon sx={{color: color}}/>
+                    <FavoriteIcon sx={{color: color}}/> 
                 </IconButton>
+                <Typography variant="body1" color="text.secondary">
+                    {props.data.like_users.length}
+                </Typography>
+                </Stack>
               }
             title={props.data.user_name}
             subheader={new Date(props.data.created_date).toDateString()}

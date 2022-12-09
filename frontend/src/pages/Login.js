@@ -14,7 +14,13 @@ function Login (props) {
     const [errorMessage, setError] = useState('');
     
     if (user) {
-        navigate(-1);
+        try {
+            navigate(-1);
+        } 
+        catch {
+            navigate('/profile')
+        }
+        
     };
 
     const handleLogin = (e) => {
