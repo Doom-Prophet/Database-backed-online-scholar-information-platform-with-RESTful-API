@@ -7,11 +7,11 @@ module.exports = function(router){
     // POST request for creating paper.
     router.post("/paper/create", paper_controller.paper_create);
 
-    // GET request to delete paper.
-    router.get("/paper/:id/delete", paper_controller.paper_delete_get);
+    // DELETE request to delete paper.
+    router.delete("/paper/:id", paper_controller.paper_delete);
 
     // POST request to delete paper.
-    router.post("/paper/:id/delete", paper_controller.paper_delete_post);
+    // router.post("/paper/:id/delete", paper_controller.paper_delete_post);
 
     // GET request to update paper.
     // router.get("/paper/:id/update", paper_controller.paper_update_get);
