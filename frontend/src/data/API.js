@@ -1,19 +1,20 @@
 import axios from 'axios';
 import {papers, posts, post, paper} from './mock_data';
 
-const baseURL = 'https://9bfeaf60-09b0-4a0d-b89d-475ab011b395.mock.pstmn.io/api'
+const baseURL = 'http://localhost:4000/api'
 
 
 /* User's APIs */ 
 const GetUser = (email) => {
   return new Promise((resolve, reject) => {
     axios
-    .get(baseURL+'/users', {
+    .get(baseURL+'/user', {
       params: {
         email: email,
       },
     })
     .then(response => {
+      console.log("getuser:",response);
       const user = response.data.data;
       const data = { id: user._id, email: user.email, name: user.user_name, field: user.research_field, papers: user.favorite_papers, posts: user.posts};
       resolve(data);
@@ -25,9 +26,10 @@ const GetUser = (email) => {
 };
 
 const PostUser = (user) => {
+  console.log(user)
   return new Promise((resolve, reject) => {
     axios
-    .post(baseURL+'/users', 
+    .post(baseURL+'/user/create', 
       JSON.stringify({
         "user_name": user.name,
         "email": user.email,
@@ -43,6 +45,7 @@ const PostUser = (user) => {
       resolve(data);
     })
     .catch(err => {
+      console.log(err)
       reject(err);
     });
   })
@@ -52,7 +55,7 @@ const PostUser = (user) => {
 const PutUser = (user) => {
   return new Promise((resolve, reject) => {
     axios
-    .put(baseURL+'/users/'+user.id, JSON.stringify(user),
+    .put(baseURL+'/user/'+user.id, JSON.stringify(user),
     {headers: {
       'Content-Type': 'application/json',
     }})
@@ -71,9 +74,10 @@ const PutUser = (user) => {
 
 /* Paper's APIs */ 
 const GetPaperDetail = (id) => {
+  console.log("id:"+id);
   return new Promise((resolve, reject) => {
     axios
-    .get(baseURL+'/papers/'+id)
+    .get(baseURL+'/paper/'+id)
     .then(response => {
       resolve(response.data.data);
     })
@@ -85,9 +89,9 @@ const GetPaperDetail = (id) => {
 
 
 const GetPaperList = (keywords=null, ids=null, limit=10, offset=0) => {
-  return new Promise((resolve, reject) => {
-    resolve(papers);
-  });
+  // return new Promise((resolve, reject) => {
+  //   resolve(papers);
+  // });
   return new Promise((resolve, reject) => {
     axios
     .get(baseURL+'/papers',{
@@ -110,10 +114,10 @@ const GetPaperList = (keywords=null, ids=null, limit=10, offset=0) => {
 
 /* Post API */
 const GetPosts = (field=null, ids=null, limit=10, offset=0) => {
-  console.log('GET POST')
-  return new Promise((resolve, reject) => {
-    resolve(posts);
-  });
+  // console.log('GET POST')
+  // return new Promise((resolve, reject) => {
+  //   resolve(posts);
+  // });
   return new Promise((resolve, reject) => {
     axios
     .get(baseURL+'/posts',{
@@ -135,20 +139,20 @@ const GetPosts = (field=null, ids=null, limit=10, offset=0) => {
 
 const PostPost = (post) => {
   return new Promise((resolve, reject) => {
-    resolve(post);
-    // axios
-    // .post(baseURL+'/posts', 
-    //   JSON.stringify(post),
-    //   {headers: {
-    //     'Content-Type': 'application/json',
-    //   }}
-    // )
-    // .then(response => {
-    //   resolve(response.data.data);
-    // })
-    // .catch(err => {
-    //   reject(err);
-    // });
+    // resolve(post);
+    axios
+    .post(baseURL+'/post/create', 
+      JSON.stringify(post),
+      {headers: {
+        'Content-Type': 'application/json',
+      }}
+    )
+    .then(response => {
+      resolve(response.data.data);
+    })
+    .catch(err => {
+      reject(err);
+    });
   })
 };
 
