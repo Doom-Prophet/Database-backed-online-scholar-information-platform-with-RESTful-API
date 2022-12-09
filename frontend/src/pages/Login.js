@@ -1,17 +1,27 @@
 import {useContext, useState} from 'react';
 import {UserContext} from '../context/UserContext'
-import {Link, Navigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {Box, Stack, Button, TextField, Alert, Typography} from '@mui/material';
 import {signInWithFirebase} from '../firebase';
 import {GetUser} from '../data/API';
 
+
 function Login (props) {
+    const navigate = useNavigate();
     const { user, login } = useContext(UserContext);
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState('');       
     const [errorMessage, setError] = useState('');
     
-    if (user) return <Navigate to="/profile" />;
+    if (user) {
+        try {
+            navigate(-1);
+        } 
+        catch {
+            navigate('/profile')
+        }
+        
+    };
 
     const handleLogin = (e) => {
         e.preventDefault();

@@ -1,10 +1,10 @@
 import { useState, useEffect, useContext} from "react";
-import { useParams, useNavigate, Navigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import {UserContext} from '../context/UserContext'
 import PropTypes from 'prop-types';
 import {Box, Stack, Typography, Button, IconButton} from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
-import {GetPaperDetail} from '../data/API';
+import {GetPaperDetail, PutUser} from '../data/API';
 import NoMatch from "./NoMatch";
 
 /*
@@ -18,7 +18,7 @@ const Paper = (props) => {
   const navigate = useNavigate();
   const [paper, setPaper] = useState(null);
   const [color, setColor] = useState('grey');
-  const { user } = useContext(UserContext);
+  const { user, user_fav_papers, addPaper } = useContext(UserContext);
   const [isMatch, setIsMatch] = useState(true);
 
   useEffect( () => {
@@ -31,14 +31,31 @@ const Paper = (props) => {
     })
   }, [id])
 
-  // if (!user || !user.auth) 
-  //     return <Navigate to="/login" />;  
-  // TODO 
-  const handleFavChange = (e) => {
-    if (color === 'grey') {
+  useEffect(() => {
+    console.log(user, user_fav_papers)
+    if (user && user_fav_papers && user_fav_papers.includes(id)) {
         setColor('orange');
+    }
+  }, [id, user, user_fav_papers]);
+
+
+  const handleFavChange = (e) => {
+    if (!user) {
+      navigate('/login');
+    }
+    const curr_paper_list = user_fav_papers || [];
+    if (color === 'grey') {
+      PutUser({id: user.id , favorite_papers: [...curr_paper_list, id]})
+        .then((user) => {
+          addPaper(id)
+        })
+        .catch((err) => console.error(err));
+      setColor('orange');
     } else {
-        setColor('grey');
+      PutUser({id: user.id , user_fav_papers: curr_paper_list.filter((paperID) => id !== paperID)})
+        .then((user) => addPaper(id))
+        .catch((err) => console.error(err));
+      setColor('grey');
     }
   }
 
@@ -60,7 +77,7 @@ const Paper = (props) => {
           <StarIcon sx={{color: color}}/>
         </IconButton>
         <Typography variant="h3" color="text.primary">
-          {paper.title}
+          {paper.paper_name}
         </Typography>
       </Stack>
       <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center" sx={{mt:1}}>
@@ -76,7 +93,7 @@ const Paper = (props) => {
       </Typography>
       <Typography variant="body1" color="text.secondary" paragraph={true} sx={{mt:3}}>
           {paper.abstract}
-      </Typography>
+      </Typography>x
     </Box>
     <Box sx={{ justifyContent: "center", display: "flex"}}>
       <Stack direction="row" spacing={2}>

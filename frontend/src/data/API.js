@@ -14,7 +14,7 @@ const GetUser = (email) => {
       },
     })
     .then(response => {
-      console.log("getuser:",response);
+      // console.log("getuser:",response);
       const user = response.data.data;
       const data = { id: user._id, email: user.email, name: user.user_name, field: user.research_field, papers: user.favorite_papers, posts: user.posts};
       resolve(data);
@@ -26,7 +26,7 @@ const GetUser = (email) => {
 };
 
 const PostUser = (user) => {
-  console.log(user)
+  // console.log(user)
   return new Promise((resolve, reject) => {
     axios
     .post(baseURL+'/user/create', 
@@ -45,7 +45,7 @@ const PostUser = (user) => {
       resolve(data);
     })
     .catch(err => {
-      console.log(err)
+      // console.log(err)
       reject(err);
     });
   })
@@ -74,7 +74,7 @@ const PutUser = (user) => {
 
 /* Paper's APIs */ 
 const GetPaperDetail = (id) => {
-  console.log("id:"+id);
+  // console.log("id:"+id);
   return new Promise((resolve, reject) => {
     axios
     .get(baseURL+'/paper/'+id)
