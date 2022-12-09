@@ -8,7 +8,7 @@ module.exports = function(router){
     router.get("/users", user_controller.user_list);
 
     // GET request for one user.
-    router.get("/user/:id", user_controller.user_detail);
+    router.get("/user", user_controller.user_detail);
 
     // POST request for creating user.
     router.post("/user/create", user_controller.user_create);

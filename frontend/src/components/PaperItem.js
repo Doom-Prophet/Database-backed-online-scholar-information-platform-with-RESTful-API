@@ -7,6 +7,7 @@ function PaperItem (props) {
   const [paper, setPaper] = useState(null);
 
   useEffect( () => {
+    console.log("props.id:"+props.id);
     GetPaperDetail(props.id)
     .then(paper => {
       setPaper(paper);
@@ -30,7 +31,7 @@ function PaperItem (props) {
       <>
       <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
           <Typography variant="h6" color="text.primary">
-          {paper.title}
+          {paper.paper_name}
           </Typography>
           <Typography variant="subtitle1" color="text.secondary">
           {paper.venue + ' ' + paper.year}

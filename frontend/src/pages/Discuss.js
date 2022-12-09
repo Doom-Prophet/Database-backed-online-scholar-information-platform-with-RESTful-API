@@ -39,12 +39,14 @@ function Post (props) {
         }
     }
 
+    console.log("props.data.paper:"+props.data.paper);
+
     return (
     <Card sx={{width:700}}>
         <CardHeader 
             avatar={
             <Avatar sx={{ bgcolor: 'secondary.main' }} aria-label="recipe">
-            {props.data.User_name[0]}
+            {props.data.user_name[0]}
             </Avatar>
             } 
             action={
@@ -52,19 +54,20 @@ function Post (props) {
                     <FavoriteIcon sx={{color: color}}/>
                 </IconButton>
               }
-            title={props.data.User_name}
-            subheader={new Date(props.data.Created_date).toDateString()}
+            title={props.data.user_name}
+            subheader={new Date(props.data.created_date).toDateString()}
         />
         <CardContent>
             <Typography variant="body1" color="text.primary">
-                {props.data.Content}
+                {props.data.content}
             </Typography>
         </CardContent>
-        <Link className='nonstyLink' to={`../paper/${props.data.Paper}`}>
-            <PaperItem id={props.data.Paper} />
+        <Link className='nonstyLink' to={`../paper/${props.data.referred_paper_id}`}>
+            <PaperItem id={props.data.referred_paper_id} />
         </Link>
     </Card>)
 }
+
 
 
 /* Discuss page

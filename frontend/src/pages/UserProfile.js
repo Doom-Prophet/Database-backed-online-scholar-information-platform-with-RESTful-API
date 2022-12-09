@@ -39,6 +39,7 @@ function FavPaperItem(props) {
 }
 
 function FavoritePaperList(props) {
+    if(!props || !props.papers) return <></>
     return (<Stack>
         {props.papers.map((paper, i)=>{return <FavPaperItem key={i} id={paper} />})}
     </Stack>);
@@ -46,6 +47,7 @@ function FavoritePaperList(props) {
 
 
 function PostItem(props) {
+    if(!props || !props.papers) return <></>
     return (
         <Box sx= {{
             width: 800,

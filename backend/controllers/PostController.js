@@ -10,19 +10,20 @@ exports.post_list = async(req, res) => {
   const params = new URLSearchParams(arg);
   var query = {};
   params.forEach((val,key) => {
-      query[key] = JSON.parse(val);
+      query[key] = val;
   });
   var post = null;
+  console.log("post query:"+req.query.field);
   try {
       if (!params.count) {
-          post = await postmodel.find(query.where, query.select).sort(query.sort).skip(query.skip).limit(query.limit);
+          post = await postmodel.find({ research_field: { $regex: req.query.field}}).sort(query.sort).skip(query.skip).limit(parseInt(req.query.limit));
           if(post){
               res.status(200).json({message:"Success", data:post});
           }else{
               res.status(404).json({message:"No post matched", data:null});
           }
       } else {
-          post = await postmodel.find(query.where, query.select).sort(query.sort).skip(query.skip).limit(query.limit).count();
+          post = await postmodel.find({ research_field: { $regex: req.query.field}}).sort(query.sort).skip(query.skip).limit(parseInt(req.query.limit)).count();
           if(post){
               res.status(200).json({message:"Success", data:post});
           }else{

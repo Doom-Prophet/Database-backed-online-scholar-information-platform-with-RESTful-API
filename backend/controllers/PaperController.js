@@ -10,19 +10,22 @@ exports.paper_list = async(req, res) => {
   const params = new URLSearchParams(arg);
   var query = {};
   params.forEach((val,key) => {
-      query[key] = JSON.parse(val);
+      query[key] = val;
   });
+  console.log(req.query);
   var paper = null;
   try {
       if (!params.count) {
-          paper = await papermodel.find(query.where, query.select).sort(query.sort).skip(query.skip).limit(query.limit);
+          paper = await papermodel.find({ paper_name: { $regex: req.query.keywords}}).sort(query.sort).skip(query.skip).limit(parseInt(req.query.limit));
+          console.log("paper1:"+paper);
           if(paper){
               res.status(200).json({message:"Success", data:paper});
           }else{
               res.status(404).json({message:"No paper matched", data:null});
           }
       } else {
-          paper = await papermodel.find(query.where, query.select).sort(query.sort).skip(query.skip).limit(query.limit).count();
+          paper = await papermodel.find({ paper_name: { $regex: req.query.keywords}}).sort(query.sort).skip(query.skip).limit(parseInt(req.query.limit)).count();
+          console.log("paper2:"+paper);
           if(paper){
               res.status(200).json({message:"Success", data:paper});
           }else{
@@ -30,12 +33,14 @@ exports.paper_list = async(req, res) => {
           }
       }
   } catch(err) {
+    console.log("HERE!!"+err);
       res.status(404).json({message:"Server error, fail to get papers' list", data:null});
   }
 };
 
 // Display detail page for a specific paper.
 exports.paper_detail = async(req, res) => {
+    console.log("paper detail!!!"+req.params.id);
     try{
         if(!mongoose.Types.ObjectId.isValid(req.params.id)){
             return res.status(404).json({message:"Not found: no matched paper for id "+req.params.id, data:null});

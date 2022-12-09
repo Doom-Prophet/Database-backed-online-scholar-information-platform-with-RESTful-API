@@ -6,13 +6,16 @@ const {validationResult} = require('express-validator');
 
 // Display list of all users.
 exports.user_list = async(req, res) => {
+  console.log("params1111:"+req.query);
   const arg = req.query;
   const params = new URLSearchParams(arg);
   var query = {};
   params.forEach((val,key) => {
-      query[key] = JSON.parse(val);
+      console.log("val:"+val+",key:"+key);
+      query[key] = val;
   });
   var user = null;
+//   console.log("params:"+req.params);
   try {
       if (!params.count) {
           user = await usermodel.find(query.where, query.select).sort(query.sort).skip(query.skip).limit(query.limit);
@@ -35,25 +38,27 @@ exports.user_list = async(req, res) => {
 
 // Display detail page for a specific user.
 exports.user_detail = async(req, res) => {
+    console.log(req.query.email);
   try{
-    if(!mongoose.Types.ObjectId.isValid(req.params.id)){
-        return res.status(404).json({message:"Not found: no matched user for id "+req.params.id, data:null});
-    }
+    // if(!mongoose.Types.ObjectId.isValid(req.params.email)){
+    //     return res.status(404).json({message:"Not found: no matched user for id12 "+req.params.id, data:null});
+    // }
         
-    const user = await usermodel.findById(req.params.id).lean();
+    const user = await usermodel.findOne({ email:req.query.email });
     if(!user){
-        return res.status(404).json({message:"Not found: no matched user for id "+req.params.id, data:null});
+        return res.status(404).json({message:"Not found: no matched user for id34 "+req.params.id, data:null});
     }else{
         return res.status(200).json({message:"Success", data:user});
     }
-}
-catch(error){
+  }
+  catch(error){
     res.status(500).json({message:"server error, fail to get a certain user info", data:error});
-}
+  }
 };
 
 // Handle user create on POST.
 exports.user_create = async(req, res) => {
+  console.log("params:"+req.params);
   const val_err = validationResult(req);
   if(!val_err.isEmpty()){
       return res.status(400).json({message:"new user validation failed", data:val_err.array()});
