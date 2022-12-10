@@ -123,7 +123,7 @@ const GetPosts = (field=null, ids=null, limit=10, offset=0) => {
     .get(baseURL+'/posts',{
       params: {
         field: field,
-        where: ids? {"_id": {"$in": ids}} : null,
+        where: ids,
         limit: limit,
         offset: offset
       },

@@ -54,13 +54,13 @@ function FavoritePaperList(props) {
 
     if(!props || !props.papers) return <></>
     return (<Stack>
-        {props.papers.map((paper, i)=>{return <FavPaperItem key={i} id={paper} />})}
+        {papers.map((paper, i)=>{return <FavPaperItem key={i} id={paper} />})}
     </Stack>);
 }
 
 
 function PostItem(props) {
-    if(!props || !props.papers) return <></>
+    if(!props || !props.data) return <></>
     return (
         <Box sx= {{
             width: 800,
@@ -74,14 +74,14 @@ function PostItem(props) {
         }}>
         <Stack direction="row" spacing={2} justifyContent="space-between" alignItems="center">
             <Typography variant="h6" color="text.primary">
-            {new Date(props.data.Created_date).toDateString()}
+            {new Date(props.data.created_date).toDateString()}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-            <FavoriteIcon /> {props.data.Like_users.length}
+            <FavoriteIcon /> {props.data.like_users.length}
             </Typography>
         </Stack>
         <Typography variant="body1" color="text.secondary">
-            {props.data.Content}
+            {props.data.content}
         </Typography>
                         
         </Box>
@@ -92,9 +92,10 @@ function MyPosts (props) {
     const [data, setData] = useState([]);
     // console.log(props.posts)
     useEffect(() => {
+        console.log(props.posts)
         GetPosts(null, props.posts)
             .then( res => {
-                // console.log(res)
+                console.log(res);
                 setData(res);
             })
             .catch( err => { console.log(err);})

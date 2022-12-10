@@ -45,7 +45,8 @@ function Post (props) {
     const handleFavChange = (e) => {
         if (color === 'grey') {
             const users =  props.data.like_users || [];
-            PutPost({id: props.data._id , like_users: [...users, user.id]})
+            users = [...users, user.id];
+            PutPost({id: props.data._id , like_users: users})
             .then((post) => {
                 setLikes(likes + 1);
                 console.log('like successfully', post)
