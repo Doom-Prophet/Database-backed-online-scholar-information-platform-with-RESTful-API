@@ -52,19 +52,17 @@ function Login (props) {
             mt: 10
             }}>
             <Typography variant="h4" className="centered">Log In</Typography>
-            <form>
-                <Stack spacing={1} sx={{ width: 300 }}>
-                <TextField className="inputText" variant="standard" label="Email" 
-                    onChange={e => {setEmail(e.target.value)}} 
-                    required/>
-                <TextField className="inputText" variant="standard" label="Password" type='password'
-                    onChange={e => {setPassword(e.target.value)}} 
-                    required/>
-                <Button variant="contained" onClick={handleLogin}>Log in</Button>
-                <Link className="centered" to='../signup'>Need an account? Sign up now </Link>
-                { errorMessage ? <Alert severity="error">{errorMessage}</Alert> : false}
-                </Stack>
-            </form>
+            <Stack spacing={2} sx={{ width: 300, mt: 3 }}>
+            <TextField className="inputText" variant="standard" label="Email" 
+                onChange={e => {setEmail(e.target.value)}} 
+                required/>
+            <TextField className="inputText" variant="standard" label="Password" type='password'
+                onChange={e => {setPassword(e.target.value)}} 
+                required/>
+            <Button variant="contained" onClick={handleLogin}>Log in</Button>
+            <Link className="centered" to='../signup'>Need an account? Sign up now </Link>
+            { errorMessage ? <Alert severity="error">{errorMessage}</Alert> : false}
+            </Stack>
         </Box>
     </>   
     );

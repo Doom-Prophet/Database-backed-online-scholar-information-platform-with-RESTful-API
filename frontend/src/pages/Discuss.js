@@ -32,7 +32,7 @@ function Post (props) {
     const [likes, setLikes] = useState(0);
 
     useEffect(() => {
-        console.log(props.data)
+        // console.log(props.data)
         const users = props.data.like_users;
         setLikes(users.length);
         if (users && users.includes(user.id)) {
@@ -49,7 +49,7 @@ function Post (props) {
             PutPost({id: props.data._id , like_users: users})
             .then((post) => {
                 setLikes(likes + 1);
-                console.log('like successfully', post)
+                // console.log('like successfully', post)
             })
             .catch((err) => console.error(err));
             setColor('red');
@@ -58,7 +58,7 @@ function Post (props) {
             PutPost({id: props.data._id , like_users: users.filter(u => u !== user.id)})
             .then((post) => {
                 setLikes(likes - 1);
-                console.log('unlike successfully', post)
+                // console.log('unlike successfully', post)
             })
             .catch((err) => console.error(err));
             setColor('grey');
@@ -100,6 +100,20 @@ function Post (props) {
     </Card>)
 }
 
+const sortFunc = (key) => {
+    if (key === 'like')
+        return (a, b) => {
+            if (a.like_users.length > b.like_users.length) return -1;
+            else return 1;
+        }
+    return (a, b) => {
+      if (a[key] > b[key]) return -1;
+      if (a[key] < b[key]) return 1; 
+      return 0;
+    }
+}
+
+
 
 
 /* Discuss page
@@ -131,12 +145,14 @@ function Discuss (props) {
 
     const handleSortKeyChange = (event, newKey) => {
       setSortKey(newKey);
+      posts.sort(sortFunc(newKey));
+      setPosts(posts);
     };
 
     return (
         <>
-        <Toolbar>
-            <Typography variant="h6" noWrap component="div">
+        <Toolbar sx= {{mb: 3}}>
+            <Typography variant="h6" noWrap component="div" color="primary.dark">
                 Research Field: {user.field}
             </Typography>
             <Box sx={{ flexGrow: 1 }} />
@@ -148,7 +164,7 @@ function Discuss (props) {
                 onChange={handleSortKeyChange}
                 aria-label="sort key"
                 >
-                <ToggleButton value="date">Most Recent</ToggleButton>
+                <ToggleButton value="created_date">Most Recent</ToggleButton>
                 <ToggleButton value="like">Most Likes</ToggleButton>
                 </ToggleButtonGroup>
             </Box>
