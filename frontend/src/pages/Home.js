@@ -33,6 +33,7 @@ const Home = () => {
             >
               <Link className='nonstyLink' to="post"><AddCircleIcon /></Link>
             </IconButton>
+            
           </Box>
           <Box >
             <IconButton
