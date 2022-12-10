@@ -61,36 +61,34 @@ function Signup (props) {
             padding: '30px 50px'
             }}>
             <Typography variant="h4" className="centered">Sign Up</Typography>
-            <form>
-                <Stack spacing={1} sx={{ width: 300 }}>
-                    <TextField className="inputText" variant="standard" label="Username" 
-                        onChange={e => {setName(e.target.value)}} 
-                        required
-                    />
-                    <TextField className="inputText" variant="standard" label="Email" 
-                        onChange={e => {setEmail(e.target.value)}} 
-                        required
-                    />
-                    <TextField className="inputText" variant="standard" label="Password" 
-                        onChange={e => {setPassword(e.target.value)}} 
-                        required
-                        type="password"
-                    />
-                    <Autocomplete
-                        disablePortal
-                        options={FIELDs}
-                        renderInput={(params) => <TextField {...params} label="Research Field" />}
-                        required
-                        onChange={(e, newValue) => {
-                            setField(newValue);
-                        }}
-                    />
-                    <Button variant="contained" onClick={handleSignup}>Sign Up</Button>
-                    <Link className="centered" to='../login'>Have an account? Log in here </Link>
-                    { error  ? <Alert severity="error">{error}</Alert> : false}
-                </Stack>
-                </form>
-                
+            <Stack spacing={2} sx={{ width: 300, mt:2 }}>
+                <TextField className="inputText" variant="standard" label="Username" 
+                    onChange={e => {setName(e.target.value)}} 
+                    required
+                />
+                <TextField className="inputText" variant="standard" label="Email" 
+                    onChange={e => {setEmail(e.target.value)}} 
+                    required
+                />
+                <TextField className="inputText" variant="standard" label="Password" 
+                    onChange={e => {setPassword(e.target.value)}} 
+                    required
+                    type="password"
+                />
+                <Autocomplete
+                    disablePortal
+                    options={FIELDs}
+                    renderInput={(params) => <TextField {...params} label="Research Field" />}
+                    required
+                    onChange={(e, newValue) => {
+                        setField(newValue);
+                    }}
+                />
+                <Button variant="contained" onClick={handleSignup}>Sign Up</Button>
+                <Link className="centered" to='../login'>Have an account? Log in here </Link>
+                { error  ? <Alert severity="error">{error}</Alert> : false}
+            </Stack>
+
         </Box>
     </>
     );
