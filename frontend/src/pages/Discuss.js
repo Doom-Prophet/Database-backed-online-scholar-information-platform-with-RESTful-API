@@ -29,26 +29,37 @@ import {GetPosts, PutPost} from '../data/API';
 function Post (props) {
     const { user } = useContext(UserContext);
     const [color, setColor] = useState('grey');
+    const [likes, setLikes] = useState(0);
 
     useEffect(() => {
-        const users = props.like_users;
-        if (users && users.include(user.id)) {
+        console.log(props.data)
+        const users = props.data.like_users;
+        setLikes(users.length);
+        if (users && users.includes(user.id)) {
             setColor('red')
         } else {
             setColor('grey')
         }
-    }, [props.like_users])
+    }, [props.data.like_users])
 
     const handleFavChange = (e) => {
         if (color === 'grey') {
-            const users =  props.like_user || [];
-            PutPost({id: props.data._id , like_user: [...users, user.id]})
+            const users =  props.data.like_users || [];
+            PutPost({id: props.data._id , like_users: [...users, user.id]})
             .then((post) => {
+                setLikes(likes + 1);
                 console.log('like successfully', post)
             })
             .catch((err) => console.error(err));
             setColor('red');
         } else {
+            const users =  props.data.like_users || [];
+            PutPost({id: props.data._id , like_users: users.filter(u => u !== user.id)})
+            .then((post) => {
+                setLikes(likes - 1);
+                console.log('unlike successfully', post)
+            })
+            .catch((err) => console.error(err));
             setColor('grey');
         }
     }
@@ -70,7 +81,7 @@ function Post (props) {
                     <FavoriteIcon sx={{color: color}}/> 
                 </IconButton>
                 <Typography variant="body1" color="text.secondary">
-                    {props.data.like_users.length}
+                    {likes}
                 </Typography>
                 </Stack>
               }

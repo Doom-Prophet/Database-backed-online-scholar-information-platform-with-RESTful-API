@@ -13,21 +13,17 @@ module.exports = function(router){
     // POST request for creating user.
     router.post("/user/create", user_controller.user_create);
 
-    // GET request to delete user.
-    router.get("/user/:id/delete", user_controller.user_delete_get);
+    // DELETE request to delete user.
+    router.delete("/user/:id", user_controller.user_delete);
 
     // POST request to delete user.
-    router.post("/user/:id/delete", user_controller.user_delete_post);
+    // router.post("/user/:id/delete", user_controller.user_delete_post);
 
-    // GET request to update user.
-    // router.get("/user/:id/update", user_controller.user_update_get);
+    // PUT request to update user.
+    router.put("/user/:id", user_controller.user_update);
 
     // POST request to update user.
     // router.post("/user/:id/update", user_controller.user_update_post);
-
-
-
-
 
     return router;
 }

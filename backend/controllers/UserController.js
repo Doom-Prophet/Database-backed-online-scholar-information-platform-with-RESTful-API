@@ -6,32 +6,38 @@ const {validationResult} = require('express-validator');
 
 // Display list of all users.
 exports.user_list = async(req, res) => {
-  console.log("params1111:"+req.query);
-  const arg = req.query;
-  const params = new URLSearchParams(arg);
-  var query = {};
-  params.forEach((val,key) => {
-      console.log("val:"+val+",key:"+key);
-      query[key] = val;
-  });
+  // console.log("params1111:"+req.query);
+  // const arg = req.query;
+  // const params = new URLSearchParams(arg);
+  // var query = {};
+  // params.forEach((val,key) => {
+  //     console.log("val:"+val+",key:"+key);
+  //     query[key] = val;
+  // });
   var user = null;
 //   console.log("params:"+req.params);
   try {
-      if (!params.count) {
-          user = await usermodel.find(query.where, query.select).sort(query.sort).skip(query.skip).limit(query.limit);
-          if(user){
-              res.status(200).json({message:"Success", data:user});
-          }else{
-              res.status(404).json({message:"No user matched", data:null});
-          }
-      } else {
-          user = await usermodel.find(query.where, query.select).sort(query.sort).skip(query.skip).limit(query.limit).count();
-          if(user){
-              res.status(200).json({message:"Success", data:user});
-          }else{
-              res.status(404).json({message:"No user matched", data:null});
-          }
-      }
+    user = await usermodel.find(req.query.where, req.query.select).sort(req.query.sort).skip(req.query.skip).limit(parseInt(req.query.limit));
+    if(user){
+      res.status(200).json({message:"Success", data:user});
+    }else{
+      res.status(404).json({message:"No user matched", data:null});
+    }
+      // if (!params.count) {
+      //     user = await usermodel.find(query.where, query.select).sort(req.query.sort).skip(req.query.skip).limit(parseInt(req.query.limit));
+      //     if(user){
+      //         res.status(200).json({message:"Success", data:user});
+      //     }else{
+      //         res.status(404).json({message:"No user matched", data:null});
+      //     }
+      // } else {
+      //     user = await usermodel.find(query.where, query.select).sort(req.query.sort).skip(req.query.skip).limit(parseInt(req.query.limit)).count();
+      //     if(user){
+      //         res.status(200).json({message:"Success", data:user});
+      //     }else{
+      //         res.status(404).json({message:"No user matched", data:null});
+      //     }
+      // }
   } catch(err) {
       res.status(404).json({message:"Server error, fail to get users' list", data:null});
   }};
@@ -40,13 +46,13 @@ exports.user_list = async(req, res) => {
 exports.user_detail = async(req, res) => {
     console.log(req.query.email);
   try{
-    // if(!mongoose.Types.ObjectId.isValid(req.params.email)){
-    //     return res.status(404).json({message:"Not found: no matched user for id12 "+req.params.id, data:null});
+    // if(!mongoose.Types.ObjectId.isValid(req.query.email)){
+    //     return res.status(404).json({message:"Invalid email "+req.query.email, data:null});
     // }
         
     const user = await usermodel.findOne({ email:req.query.email });
     if(!user){
-        return res.status(404).json({message:"Not found: no matched user for id34 "+req.params.id, data:null});
+        return res.status(404).json({message:"Not found: no matched user for email "+req.query.email, data:null});
     }else{
         return res.status(200).json({message:"Success", data:user});
     }
@@ -58,7 +64,7 @@ exports.user_detail = async(req, res) => {
 
 // Handle user create on POST.
 exports.user_create = async(req, res) => {
-  console.log("params:"+req.params);
+  // console.log("params:"+req.params);
   const val_err = validationResult(req);
   if(!val_err.isEmpty()){
       return res.status(400).json({message:"new user validation failed", data:val_err.array()});
@@ -73,19 +79,31 @@ exports.user_create = async(req, res) => {
 };
 
 // Display user delete form on GET.
-exports.user_delete_get = (req, res) => {
-  res.send("NOT IMPLEMENTED: user delete GET");
+exports.user_delete = async(req, res) => {
+  try{
+      let result = await usermodel.deleteOne({_id: req.params.id});
+      return res.status(200).json({message:"Success to delete user with id:"+req.params.id, data:result});
+  }
+  catch(error){
+      res.status(500).json({message:"fail to delete user for id:"+req.params.id, data:error});
+  }
 };
 
 // Handle user delete on POST.
-exports.user_delete_post = (req, res) => {
-  res.send("NOT IMPLEMENTED: user delete POST!");
-};
-
-// Display user update form on GET.
-// exports.user_update_get = (req, res) => {
-//   res.send("NOT IMPLEMENTED: user update GET");
+// exports.user_delete_post = (req, res) => {
+//   res.send("NOT IMPLEMENTED: user delete POST!");
 // };
+
+// Display user update form on PUT.
+exports.user_update = async(req, res) => {  
+  try{
+    let result = await usermodel.findOneAndUpdate({ _id: req.params.id }, { favourite_papers: req.body.favourite_papers }, { new: true });
+    return res.status(200).json({message:"Success to update user with id:"+req.params.id, data:result});
+  }
+  catch(error){
+    res.status(500).json({message:"fail to update user for id:"+req.params.id, data:error});
+  }
+};
 
 // Handle user update on POST.
 // exports.user_update_post = (req, res) => {

@@ -16,28 +16,30 @@ function NewPost (props) {
   useEffect(() => {
     GetPaperList()
       .then((papers) => {
-        setOptions(papers);
+        if (papers)
+          setOptions(papers);
+        else {
+          setOptions([])
+        }
       })
       .catch((err) => console.error(err))
   }, []);
 
   if (!user) return <Navigate to="/login" />;
  
-  // TODO: Some bugs here
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!content || !paper) {
       setErrorMessage("Please enter the content and the paper");
     } else {
-      console.log(paper)
       PostPost({
-        User_id: user.id,
-        User_name: user.name,
-        Content: content,
-        Paper: paper,
-        Field: user.field
+        user_id: user.id,
+        user_name: user.name,
+        content: content,
+        referred_paper_id: paper,
+        research_field: user.field
       }).then((res) => {
-        console.log(res)
         addPost(res._id);
         navigate("/discuss");
       })
@@ -86,7 +88,7 @@ function NewPost (props) {
         <Autocomplete
         freeSolo
         options={options}
-        getOptionLabel={(option) => option.title}
+        getOptionLabel={(option) => option.paper_name}
         onChange={(e, value)=>{
             e.preventDefault();
             setPapaer(value._id);
