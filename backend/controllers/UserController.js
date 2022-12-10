@@ -4,6 +4,14 @@ const usermodel = require('../models/user_model');
 const mongoose = require('mongoose');
 const {validationResult} = require('express-validator');
 
+exports.CheckUserById = async(user_id)=>{
+  console.log("user_id:"+user_id);
+  if(!mongoose.Types.ObjectId.isValid(user_id)){return false;}
+  const query = await usermodel.findById(user_id);
+  if(query){return query;}
+  return false;
+}
+
 // Display list of all users.
 exports.user_list = async(req, res) => {
   // console.log("params1111:"+req.query);
@@ -96,16 +104,33 @@ exports.user_delete = async(req, res) => {
 
 // Display user update form on PUT.
 exports.user_update = async(req, res) => {  
+  console.log("see here!!"+req.body.favourite_papers);
   try{
-    let result = await usermodel.findOneAndUpdate({ _id: req.params.id }, { favourite_papers: req.body.favourite_papers }, { new: true });
-    return res.status(200).json({message:"Success to update user with id:"+req.params.id, data:result});
+    if(req.body.favourite_papers){
+      let result = await usermodel.findOneAndUpdate({ _id: req.params.id }, { $addToSet:{favourite_papers: req.body.favourite_papers} }, { new: true },{useFindAndModify: false});
+      return res.status(200).json({message:"Success to update user with id:"+req.params.id, data:result});
+    }
+    else{
+      return res.status(200).json({message:"Already up to date."});
+    }
   }
   catch(error){
     res.status(500).json({message:"fail to update user for id:"+req.params.id, data:error});
   }
 };
 
-// Handle user update on POST.
-// exports.user_update_post = (req, res) => {
-//   res.send("NOT IMPLEMENTED: user update POST");
-// };
+// Update user's posts field when a user is creating new posts
+exports.user_update_posts = async(user_id, new_post) => {
+  console.log("1");
+
+  const query = await usermodel.findById(user_id);
+  const temp_set = new Set(query.posts);
+  // console.log("old temp_set:"+ temp_set.size);
+
+  temp_set.add(new_post);
+  console.log("new temp_set:"+Array.from(temp_set));
+
+  let result = await usermodel.findOneAndUpdate({ _id: user_id }, {posts: Array.from(temp_set)}, { new: true });
+  console.log("result here:"+result);
+  return result;
+};

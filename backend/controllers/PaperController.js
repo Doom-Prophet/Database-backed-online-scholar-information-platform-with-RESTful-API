@@ -13,7 +13,7 @@ exports.paper_list = async(req, res) => {
 //       query[key] = val;
 //   });
   console.log("hi!"+req.query.keywords+"???");
-  if (req.query.keywords==undefined){
+  if (!req.query.keywords){
     req.query.keywords = "";
   }
     var paper = null;
