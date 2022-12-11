@@ -45,14 +45,14 @@ const Paper = (props) => {
     }
     const curr_paper_list = user_fav_papers || [];
     if (color === 'grey') {
-      PutUser({id: user.id , favorite_papers: [...curr_paper_list, id]})
+      PutUser({id: user.id , favourite_papers: [...curr_paper_list, id]})
         .then((user) => {
           addPaper(id)
         })
         .catch((err) => console.error(err));
       setColor('orange');
     } else {
-      PutUser({id: user.id , user_fav_papers: curr_paper_list.filter((paperID) => id !== paperID)})
+      PutUser({id: user.id , favourite_papers: curr_paper_list.filter((paperID) => id !== paperID)})
         .then((user) => removePaper(id))
         .catch((err) => console.error(err));
       setColor('grey');

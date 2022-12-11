@@ -10,15 +10,6 @@ module.exports = function(router){
     // DELETE request to delete paper.
     router.delete("/paper/:id", paper_controller.paper_delete);
 
-    // POST request to delete paper.
-    // router.post("/paper/:id/delete", paper_controller.paper_delete_post);
-
-    // GET request to update paper.
-    // router.get("/paper/:id/update", paper_controller.paper_update_get);
-
-    // POST request to update paper.
-    // router.post("/paper/:id/update", paper_controller.paper_update_post);
-
     // GET request for one paper.
     router.get("/paper/:id", paper_controller.paper_detail);
 

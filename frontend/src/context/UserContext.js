@@ -16,8 +16,8 @@ const UserProvider = ({ children }) => {
             email: user.email,
             field: user.field
           });
-          setPapers(user.papers);
-          setPosts(user.posts);
+          setPapers(user.papers || []);
+          setPosts(user.posts || []);
         };
 
     const signup = (user) => {
@@ -27,8 +27,8 @@ const UserProvider = ({ children }) => {
             email: user.email,
             field: user.field
           });
-        setPapers(user.papers);
-        setPosts(user.posts);
+        setPapers(user.papers || []);
+        setPosts(user.posts || []);
     };
   
     const logout = () => {

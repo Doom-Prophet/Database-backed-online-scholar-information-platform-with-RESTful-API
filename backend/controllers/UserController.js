@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const {validationResult} = require('express-validator');
 
 exports.CheckUserById = async(user_id)=>{
-  console.log("user_id:"+user_id);
+  // console.log("user_id:"+user_id);
   if(!mongoose.Types.ObjectId.isValid(user_id)){return false;}
   const query = await usermodel.findById(user_id);
   if(query){return query;}
@@ -14,14 +14,6 @@ exports.CheckUserById = async(user_id)=>{
 
 // Display list of all users.
 exports.user_list = async(req, res) => {
-  // console.log("params1111:"+req.query);
-  // const arg = req.query;
-  // const params = new URLSearchParams(arg);
-  // var query = {};
-  // params.forEach((val,key) => {
-  //     console.log("val:"+val+",key:"+key);
-  //     query[key] = val;
-  // });
   var user = null;
 //   console.log("params:"+req.params);
   try {
@@ -31,33 +23,14 @@ exports.user_list = async(req, res) => {
     }else{
       res.status(404).json({message:"No user matched", data:null});
     }
-      // if (!params.count) {
-      //     user = await usermodel.find(query.where, query.select).sort(req.query.sort).skip(req.query.skip).limit(parseInt(req.query.limit));
-      //     if(user){
-      //         res.status(200).json({message:"Success", data:user});
-      //     }else{
-      //         res.status(404).json({message:"No user matched", data:null});
-      //     }
-      // } else {
-      //     user = await usermodel.find(query.where, query.select).sort(req.query.sort).skip(req.query.skip).limit(parseInt(req.query.limit)).count();
-      //     if(user){
-      //         res.status(200).json({message:"Success", data:user});
-      //     }else{
-      //         res.status(404).json({message:"No user matched", data:null});
-      //     }
-      // }
   } catch(err) {
       res.status(404).json({message:"Server error, fail to get users' list", data:null});
   }};
 
 // Display detail page for a specific user.
 exports.user_detail = async(req, res) => {
-    console.log(req.query.email);
-  try{
-    // if(!mongoose.Types.ObjectId.isValid(req.query.email)){
-    //     return res.status(404).json({message:"Invalid email "+req.query.email, data:null});
-    // }
-        
+    // console.log(req.query.email);
+  try{    
     const user = await usermodel.findOne({ email:req.query.email });
     if(!user){
         return res.status(404).json({message:"Not found: no matched user for email "+req.query.email, data:null});
@@ -97,21 +70,20 @@ exports.user_delete = async(req, res) => {
   }
 };
 
-// Handle user delete on POST.
-// exports.user_delete_post = (req, res) => {
-//   res.send("NOT IMPLEMENTED: user delete POST!");
-// };
-
 // Display user update form on PUT.
 exports.user_update = async(req, res) => {  
   console.log("see here!!"+req.body.favourite_papers);
   try{
-    if(req.body.favourite_papers){
-      let result = await usermodel.findOneAndUpdate({ _id: req.params.id }, { $addToSet:{favourite_papers: req.body.favourite_papers} }, { new: true },{useFindAndModify: false});
-      return res.status(200).json({message:"Success to update user with id:"+req.params.id, data:result});
+    if((req.body.favourite_papers.length) > 0){
+      // console.log("hihihi");
+
+      let result = await usermodel.findOneAndUpdate({ _id: req.params.id }, { favourite_papers: Array.from(new Set(req.body.favourite_papers))} , { new: true });
+      // console.log("check duplicate papers here?"+result);
+      return res.status(200).json({message:"Success to update user with user_id:"+req.params.id, data:result});
     }
     else{
-      return res.status(200).json({message:"Already up to date."});
+      let result = await usermodel.findOneAndUpdate({ _id: req.params.id }, {favourite_papers: []}, { new: true });
+      return res.status(200).json({message:"Success to update user with empty favourite paper list with user_id:"+req.params.id, data:result});
     }
   }
   catch(error){
@@ -121,16 +93,16 @@ exports.user_update = async(req, res) => {
 
 // Update user's posts field when a user is creating new posts
 exports.user_update_posts = async(user_id, new_post) => {
-  console.log("1");
+  // console.log("1");
 
   const query = await usermodel.findById(user_id);
   const temp_set = new Set(query.posts);
   // console.log("old temp_set:"+ temp_set.size);
 
   temp_set.add(new_post);
-  console.log("new temp_set:"+Array.from(temp_set));
+  // console.log("new temp_set:"+Array.from(temp_set));
 
   let result = await usermodel.findOneAndUpdate({ _id: user_id }, {posts: Array.from(temp_set)}, { new: true });
-  console.log("result here:"+result);
+  // console.log("result here:"+result);
   return result;
 };

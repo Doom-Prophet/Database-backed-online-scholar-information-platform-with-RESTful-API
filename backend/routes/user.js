@@ -14,16 +14,10 @@ module.exports = function(router){
     router.post("/user/create", user_controller.user_create);
 
     // DELETE request to delete user.
-    router.delete("/user/:id", user_controller.user_delete);
-
-    // POST request to delete user.
-    // router.post("/user/:id/delete", user_controller.user_delete_post);
+    router.delete("/user/:id", user_controller.user_delete);;
 
     // PUT request to update user.
     router.put("/user/:id", user_controller.user_update);
-
-    // POST request to update user.
-    // router.post("/user/:id/update", user_controller.user_update_post);
 
     return router;
 }

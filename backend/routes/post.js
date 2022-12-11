@@ -10,14 +10,8 @@ module.exports = function(router){
     // DELETE request to delete post.
     router.delete("/post/:id", post_controller.post_delete);
 
-    // POST request to delete post.
-    // router.post("/post/:id/delete", post_controller.post_delete_post);
-
     // PUT request to update post.
     router.put("/posts", post_controller.post_update);
-
-    // POST request to update post.
-    // router.post("/post/:id/update", post_controller.post_update_post);
 
     // GET request for one post.
     router.get("/post/:id", post_controller.post_detail);

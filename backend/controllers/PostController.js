@@ -7,18 +7,12 @@ const { any } = require('async');
 
 // Display list of all posts.
 exports.post_list = async(req, res) => {
-//   const arg = req.query;
-//   const params = new URLSearchParams(arg);
-//   var query = {};
-//   params.forEach((val,key) => {
-//       query[key] = val;
-//   });
     var post = null;
-  console.log("post field:"+req.query.field);
-  console.log("post where:"+req.query.where);
+//   console.log("post id:"+req.query.id);
+//   console.log("post where:"+req.query.where);
     try {
         if(req.query.where){
-            console.log("111:"+req.query.where.length);
+            // console.log("111:"+req.query.where.length);
             if(req.query.field){
                 post = await postmodel.find({ research_field: { $regex: req.query.field}, _id:{$in: req.query.where}}).sort(req.query.sort).skip(req.query.skip).limit(parseInt(req.query.limit));
             }
@@ -26,7 +20,7 @@ exports.post_list = async(req, res) => {
                 // console.log("2222",JSON.parse(req.query.where));
                 post = await postmodel.find({ _id:{$in: req.query.where}}).sort(req.query.sort).skip(req.query.skip).limit(parseInt(req.query.limit));
             }
-            console.log("this post?"+post);
+            // console.log("this post?"+post);
             if(post){
                 res.status(200).json({message:"Success", data:post});
             }else{
@@ -34,7 +28,7 @@ exports.post_list = async(req, res) => {
             }
         }
         else if(req.query.field){
-            console.log(req.query);
+            // console.log(req.query);
             post = await postmodel.find({ research_field: { $regex: req.query.field}}).sort(req.query.sort).skip(req.query.skip).limit(parseInt(req.query.limit));
             if(post){
                 res.status(200).json({message:"Success", data:post});
@@ -43,31 +37,11 @@ exports.post_list = async(req, res) => {
             }
         }
         else{
-            console.log("final check:"+req.query);
-            post = await postmodel.find().sort(req.query.sort).skip(req.query.skip).limit(parseInt(req.query.limit));
-            if(post){
-                res.status(200).json({message:"Success", data:post});
-            }else{
-                res.status(404).json({message:"No post matched", data:null});
-            }
+            console.log("post here:"+post);
+            res.status(200).json({message:"Success with no posts", data:post});
         }
-    //   if (!params.count) {
-    //       post = await postmodel.find({ research_field: { $regex: req.query.field}}).sort(req.query.sort).skip(req.query.skip).limit(parseInt(req.query.limit));
-    //       if(post){
-    //           res.status(200).json({message:"Success", data:post});
-    //       }else{
-    //           res.status(404).json({message:"No post matched", data:null});
-    //       }
-    //   } else {
-    //       post = await postmodel.find({ research_field: { $regex: req.query.field}}).sort(req.query.sort).skip(req.query.skip).limit(parseInt(req.query.limit)).count();
-    //       if(post){
-    //           res.status(200).json({message:"Success", data:post});
-    //       }else{
-    //           res.status(404).json({message:"No post matched", data:null});
-    //       }
-    //   }
     } catch(err) {
-        console.log(err)
+        // console.log(err)
         res.status(404).json({message:"Server error, fail to get posts' list", data:null});
     }
 };
@@ -97,14 +71,14 @@ exports.post_create = async(req, res) => {
     if(!val_err.isEmpty()){
         return res.status(400).json({message:"new post validation failed", data:val_err.array()});
     }
-    console.log("hi!");
+    // console.log("hi!");
     try{
         let result = await postmodel.create(req.body);
         // const temp_set = new Set(result.posts);
-        console.log(result._id);
+        // console.log(result._id);
         let final_result = await UserController.user_update_posts(result.user_id, result._id);
         const final_post = await postmodel.findById(result._id).lean();
-        console.log("hiiiiiii!");
+        // console.log("hiiiiiii!");
         return res.status(200).json({message:"Success to create a post for this user and update user's posts field", data:final_post});
     }
     catch(error){
@@ -123,14 +97,9 @@ exports.post_delete = async(req, res) => {
         res.status(500).json({message:"fail to delete post for id:"+req.params.id, data:error});
     }};
 
-// Handle post delete on POST.
-// exports.post_delete_post = (req, res) => {
-//   res.send("NOT IMPLEMENTED: post delete POST");
-// };
-
 // Display post update form on PUT.
 exports.post_update = async(req, res) => {
-    console.log("post update body:" + req.body.referred_paper_id);
+    // console.log("post update body:" + req.body.referred_paper_id);
   try{
     if(req.body.referred_paper_id){
         let result = await postmodel.findOneAndUpdate({ _id: req.body.id }, { like_users: Array.from(new Set(req.body.like_users)), referred_paper_id:req.body.referred_paper_id }, { new: true });
@@ -146,7 +115,3 @@ exports.post_update = async(req, res) => {
   }
 };
 
-// Handle post update on POST.
-// exports.post_update_post = (req, res) => {
-//   res.send("NOT IMPLEMENTED: post update POST");
-// };
