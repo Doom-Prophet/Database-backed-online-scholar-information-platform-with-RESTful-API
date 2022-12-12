@@ -37,7 +37,7 @@ exports.post_list = async(req, res) => {
             }
         }
         else{
-            console.log("post here:"+post);
+            // console.log("post here:"+post);
             res.status(200).json({message:"Success with no posts", data:post});
         }
     } catch(err) {
@@ -82,7 +82,7 @@ exports.post_create = async(req, res) => {
         return res.status(200).json({message:"Success to create a post for this user and update user's posts field", data:final_post});
     }
     catch(error){
-        console.log(error);
+        // console.log(error);
         res.status(500).json({message:"server error, fail to create post", data:error});
     }
 };

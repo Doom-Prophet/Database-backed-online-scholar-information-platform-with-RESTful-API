@@ -72,7 +72,7 @@ exports.user_delete = async(req, res) => {
 
 // Display user update form on PUT.
 exports.user_update = async(req, res) => {  
-  console.log("see here!!"+req.body.favourite_papers);
+  // console.log("see here!!"+req.body.favourite_papers);
   try{
     if((req.body.favourite_papers.length) > 0){
       // console.log("hihihi");

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {papers, posts, post, paper} from './mock_data';
 
-const baseURL = 'http://localhost:4000/api'
+const baseURL = 'https://cs409final.herokuapp.com/api'
 
 
 /* User's APIs */ 
